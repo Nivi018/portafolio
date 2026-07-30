@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plan de Portafolio Full Stack</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --card: #1e293b;
+      --card-soft: #263449;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-dark: #0284c7;
+      --accent: #a78bfa;
+      --success: #34d399;
+      --warning: #fbbf24;
+      --border: rgba(148, 163, 184, 0.2);
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(167, 139, 250, 0.18), transparent 30%),
+        var(--bg);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.5fr 0.9fr;
+      gap: 28px;
+      align-items: stretch;
+      margin-bottom: 28px;
+    }
+
+    .hero-main,
+    .hero-side,
+    .section,
+    .card,
+    .project,
+    .phase,
+    .table-wrap {
+      border: 1px solid var(--border);
+      background: rgba(30, 41, 59, 0.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+    }
+
+    .hero-main {
+      padding: 44px;
+    }
+
+    .hero-side {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 8px 12px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 999px;
+      color: #bae6fd;
+      background: rgba(56, 189, 248, 0.1);
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(2.5rem, 7vw, 5.8rem);
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3vw, 3rem);
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .hero-main p {
+      max-width: 760px;
+      margin-top: 22px;
+      font-size: 1.12rem;
+    }
+
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .badge {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .badge strong {
+      display: block;
+      font-size: 1.6rem;
+      color: white;
+    }
+
+    .badge span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .section {
+      margin-top: 28px;
+      padding: 34px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 24px;
+    }
+
+    .section-head p {
+      max-width: 560px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card,
+    .project,
+    .phase {
+      padding: 22px;
+      box-shadow: none;
+      background: rgba(15, 23, 42, 0.45);
+    }
+
+    .card.highlight {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.18), rgba(15, 23, 42, 0.48));
+    }
+
+    .number {
+      display: inline-grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      margin-bottom: 16px;
+      border-radius: 13px;
+      color: #082f49;
+      background: var(--primary);
+      font-weight: 900;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .pill-list li {
+      padding: 8px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: #dbeafe;
+      background: rgba(30, 41, 59, 0.8);
+      font-size: 0.9rem;
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      position: relative;
+      padding-left: 24px;
+      color: #cbd5e1;
+    }
+
+    .list li::before {
+      content: "";
+      position: absolute;
+      top: 0.7em;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--success);
+      transform: translateY(-50%);
+    }
+
+    .project {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .tag {
+      white-space: nowrap;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #fef3c7;
+      background: rgba(251, 191, 36, 0.13);
+      border: 1px solid rgba(251, 191, 36, 0.28);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stack-line {
+      padding: 14px;
+      border-radius: 18px;
+      background: rgba(2, 132, 199, 0.13);
+      color: #e0f2fe;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.92rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      box-shadow: none;
+      background: rgba(15, 23, 42, 0.42);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    th,
+    td {
+      padding: 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    th {
+      color: white;
+      background: rgba(15, 23, 42, 0.75);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    td {
+      color: #cbd5e1;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+      counter-reset: phase;
+    }
+
+    .phase {
+      position: relative;
+      padding-left: 72px;
+    }
+
+    .phase::before {
+      counter-increment: phase;
+      content: counter(phase);
+      position: absolute;
+      left: 22px;
+      top: 22px;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      color: #1e1b4b;
+      background: var(--accent);
+      font-weight: 900;
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 10px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 20px, 1180px);
+        padding-top: 24px;
+      }
+
+      .hero-main,
+      .hero-side,
+      .section {
+        padding: 22px;
+        border-radius: 22px;
+      }
+
+      .badge-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .project-top {
+        display: block;
+      }
+
+      .tag {
+        display: inline-block;
+        margin-top: 12px;
+      }
+
+      .phase {
+        padding-left: 22px;
+        padding-top: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">Ruta personal de crecimiento full stack</div>
+        <h1>Plan de Portafolio Full Stack</h1>
+        <p>
+          Una guia practica para construir proyectos reales, mejorar tus habilidades como desarrollador junior y presentar un portafolio profesional ante empresas o clientes.
+        </p>
+      </div>
+
+      <aside class="hero-side">
+        <div>
+          <h3>Objetivo principal</h3>
+          <p>Crear 3 proyectos grandes, bien documentados, desplegados y con funcionalidades reales.</p>
+        </div>
+        <div class="badge-grid">
+          <div class="badge">
+            <strong>3</strong>
+            <span>Proyectos fuertes</span>
+          </div>
+          <div class="badge">
+            <strong>1</strong>
+            <span>Stack principal</span>
+          </div>
+          <div class="badge">
+            <strong>100%</strong>
+            <span>Deploy real</span>
+          </div>
+          <div class="badge">
+            <strong>Full</strong>
+            <span>Frontend + Backend</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Ruta Recomendada</h2>
+          <p>La mejor estrategia no es hacer muchos proyectos pequenos, sino pocos proyectos completos que parezcan productos reales.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card highlight">
+          <span class="number">1</span>
+          <h3>Sistema de reservas</h3>
+          <p>Ideal para empezar porque combina usuarios, horarios, panel administrativo, emails y logica de negocio.</p>
+        </article>
+        <article class="card">
+          <span class="number">2</span>
+          <h3>E-commerce full stack</h3>
+          <p>Demuestra pagos, productos, carrito, ordenes, inventario y un panel de administracion real.</p>
+        </article>
+        <article class="card">
+          <span class="number">3</span>
+          <h3>CRM, tickets o colaboracion</h3>
+          <p>Te ayuda a mostrar roles, estados, dashboards, relaciones complejas y flujos empresariales.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Stack Principal</h2>
+          <p>Usa un stack moderno, consistente y aplicable a varios proyectos. Repetirlo te permitira dominarlo mas rapido.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>Base recomendada</h3>
+          <ul class="pill-list">
+            <li>Next.js</li>
+            <li>TypeScript</li>
+            <li>Tailwind CSS</li>
+            <li>shadcn/ui</li>
+            <li>PostgreSQL</li>
+            <li>Prisma</li>
+            <li>Auth.js o Clerk</li>
+            <li>Zod</li>
+            <li>React Hook Form</li>
+            <li>Vercel</li>
+            <li>Neon o Supabase</li>
+          </ul>
+        </article>
+
+        <article class="card">
+          <h3>Herramientas complementarias</h3>
+          <ul class="list">
+            <li>Stripe o Mercado Pago para pagos.</li>
+            <li>Cloudinary o UploadThing para imagenes y archivos.</li>
+            <li>Resend para emails transaccionales.</li>
+            <li>Recharts para dashboards y graficos.</li>
+            <li>Pusher o Socket.io para tiempo real.</li>
+            <li>FullCalendar para reservas y calendarios.</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="stack-line" style="margin-top: 18px;">
+        Stack base: Next.js + TypeScript + Tailwind CSS + shadcn/ui + PostgreSQL + Prisma + Auth.js/Clerk + Zod + React Hook Form + Vercel + Neon/Supabase
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Proyectos Recomendados</h2>
+          <p>Estos proyectos demuestran habilidades reales de desarrollo full stack y se pueden presentar como productos utilizables.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>Sistema de reservas para negocios</h3>
+              <p>Plataforma para barberias, consultorios, gimnasios o salones de belleza.</p>
+            </div>
+            <span class="tag">Prioridad alta</span>
+          </div>
+          <ul class="list">
+            <li>Registro, login y roles.</li>
+            <li>Servicios, precios y horarios.</li>
+            <li>Reservas, cancelaciones y confirmaciones.</li>
+            <li>Panel administrativo y emails.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, Auth, Resend, FullCalendar</div>
+        </article>
+
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>E-commerce con panel admin</h3>
+              <p>Tienda online completa con catalogo, pagos, ordenes e inventario.</p>
+            </div>
+            <span class="tag">Muy vendible</span>
+          </div>
+          <ul class="list">
+            <li>Productos, categorias, filtros y busqueda.</li>
+            <li>Carrito persistente y checkout.</li>
+            <li>Pagos con Stripe o Mercado Pago.</li>
+            <li>Ordenes, estados y panel admin.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, Stripe/Mercado Pago, Cloudinary</div>
+        </article>
+
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>CRM para freelancers</h3>
+              <p>Gestiona clientes, proyectos, tareas, facturas y metricas.</p>
+            </div>
+            <span class="tag">Empresarial</span>
+          </div>
+          <ul class="list">
+            <li>Clientes y proyectos relacionados.</li>
+            <li>Tareas, notas internas y estados.</li>
+            <li>Dashboard con ingresos y actividad.</li>
+            <li>Facturas y reportes exportables.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, Recharts, Resend</div>
+        </article>
+
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>Sistema de tickets de soporte</h3>
+              <p>Mini Zendesk para reportar, asignar y resolver incidencias.</p>
+            </div>
+            <span class="tag">Flujo real</span>
+          </div>
+          <ul class="list">
+            <li>Tickets con prioridad y estado.</li>
+            <li>Comentarios y archivos adjuntos.</li>
+            <li>Asignacion a agentes.</li>
+            <li>Notificaciones y filtros avanzados.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, UploadThing, Resend, Pusher</div>
+        </article>
+
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>App de finanzas personales</h3>
+              <p>Control de ingresos, gastos, presupuestos y reportes.</p>
+            </div>
+            <span class="tag">Dashboard</span>
+          </div>
+          <ul class="list">
+            <li>Ingresos, gastos y categorias.</li>
+            <li>Presupuestos mensuales.</li>
+            <li>Graficos por fecha y categoria.</li>
+            <li>Importacion CSV y gastos recurrentes.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, Recharts, date-fns</div>
+        </article>
+
+        <article class="project">
+          <div class="project-top">
+            <div>
+              <h3>Gestor tipo Trello</h3>
+              <p>App colaborativa con tableros, columnas, tarjetas y usuarios.</p>
+            </div>
+            <span class="tag">Frontend fuerte</span>
+          </div>
+          <ul class="list">
+            <li>Workspaces, proyectos y tableros.</li>
+            <li>Drag and drop persistente.</li>
+            <li>Comentarios, responsables y fechas limite.</li>
+            <li>Invitaciones y actividad reciente.</li>
+          </ul>
+          <div class="stack-line">Next.js, Prisma, PostgreSQL, dnd-kit, Pusher</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Comparativa Rapida</h2>
+          <p>Usa esta tabla para elegir segun dificultad, impacto y habilidades que quieres demostrar.</p>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Proyecto</th>
+              <th>Dificultad</th>
+              <th>Demuestra</th>
+              <th>Extra ideal</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sistema de reservas</td>
+              <td>Media</td>
+              <td>Roles, horarios, emails, dashboard</td>
+              <td>Pagos o recordatorios</td>
+            </tr>
+            <tr>
+              <td>E-commerce</td>
+              <td>Media-alta</td>
+              <td>Pagos, carrito, ordenes, admin</td>
+              <td>Cupones e inventario</td>
+            </tr>
+            <tr>
+              <td>CRM</td>
+              <td>Media</td>
+              <td>Relaciones de datos y metricas</td>
+              <td>Facturas PDF</td>
+            </tr>
+            <tr>
+              <td>Tickets</td>
+              <td>Media</td>
+              <td>Estados, prioridades, comentarios</td>
+              <td>Tiempo real</td>
+            </tr>
+            <tr>
+              <td>Finanzas</td>
+              <td>Media</td>
+              <td>Dashboards, filtros, reportes</td>
+              <td>Importar CSV</td>
+            </tr>
+            <tr>
+              <td>Trello ligero</td>
+              <td>Alta</td>
+              <td>UX avanzada, drag and drop, colaboracion</td>
+              <td>Invitaciones y tiempo real</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Checklist Profesional</h2>
+          <p>Cada proyecto de portafolio deberia cumplir esto antes de publicarlo.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-3">
+        <article class="card">
+          <h3>Producto</h3>
+          <ul class="list">
+            <li>Problema claro que resuelve.</li>
+            <li>Demo online funcionando.</li>
+            <li>Usuario demo disponible.</li>
+            <li>Diseno responsive.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Codigo</h3>
+          <ul class="list">
+            <li>TypeScript bien usado.</li>
+            <li>Validaciones con Zod.</li>
+            <li>Manejo de errores.</li>
+            <li>Estructura limpia de carpetas.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Presentacion</h3>
+          <ul class="list">
+            <li>README completo.</li>
+            <li>Capturas de pantalla.</li>
+            <li>Variables de entorno documentadas.</li>
+            <li>Explicacion del stack y decisiones.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Roadmap De Aprendizaje</h2>
+          <p>Orden recomendado para avanzar sin intentar aprender todo al mismo tiempo.</p>
+        </div>
+      </div>
+
+      <div class="timeline">
+        <article class="phase">
+          <h3>Fundamentos del stack</h3>
+          <p>Next.js, TypeScript, Tailwind, componentes, rutas, formularios y validaciones.</p>
+        </article>
+        <article class="phase">
+          <h3>Primer proyecto real</h3>
+          <p>Construye el sistema de reservas con autenticacion, base de datos y panel admin.</p>
+        </article>
+        <article class="phase">
+          <h3>Servicios externos</h3>
+          <p>Agrega emails, subida de archivos, pagos y manejo correcto de variables de entorno.</p>
+        </article>
+        <article class="phase">
+          <h3>Dashboards y roles</h3>
+          <p>Practica permisos, metricas, estados, filtros, tablas y relaciones entre modelos.</p>
+        </article>
+        <article class="phase">
+          <h3>Deploy y presentacion</h3>
+          <p>Publica la app, prepara README, capturas, usuario demo y una descripcion profesional.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Decision Final</h2>
+          <p>Si quieres una ruta directa, empieza con esta combinacion.</p>
+        </div>
+      </div>
+
+      <div class="grid grid-2">
+        <article class="card highlight">
+          <h3>Proyecto inicial recomendado</h3>
+          <p>Sistema de reservas para negocios locales.</p>
+          <ul class="list">
+            <li>Es realista para un junior.</li>
+            <li>Se puede vender como producto.</li>
+            <li>Demuestra frontend, backend, base de datos, auth, emails y dashboard.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Stack inicial recomendado</h3>
+          <p>Next.js full stack con TypeScript, PostgreSQL, Prisma, Tailwind, shadcn/ui, Auth.js o Clerk, Zod, React Hook Form y Vercel.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Plan creado para consultar y guiar la construccion de un portafolio full stack profesional.
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+!.env.example.*
+
+# Dependencies and package-manager caches
+node_modules/
+.pnpm-store/
+
+# Framework and build outputs
+.next/
+.turbo/
+dist/
+build/
+coverage/
+.cache/
+
+# Local databases, logs, and temporary files
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.err
+*.tsbuildinfo
+tmp/
+temp/
+
+# Editor and OS metadata
+.DS_Store
+Thumbs.db
+*.swp

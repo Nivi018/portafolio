@@ -1,0 +1,456 @@
+{
+  "Home": {
+    "title": "Tickets App",
+    "subtitle": "Multi-tenant support ticket system",
+    "getStarted": "Get started",
+    "signIn": "Sign in"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "saving": "Saving...",
+    "cancel": "Cancel"
+  },
+  "Profile": {
+    "title": "Profile",
+    "subtitle": "Manage your name, language and sign out.",
+    "email": "Email",
+    "emailHint": "Email cannot be changed here. Contact an admin if needed.",
+    "name": "Display name",
+    "preferredLocale": "Preferred language",
+    "preferredLocaleHint": "Affects emails and notifications you receive.",
+    "languages": {
+      "en": "English",
+      "es": "Spanish"
+    },
+    "saved": "Profile saved.",
+    "signOutTitle": "Sign out",
+    "signOutDescription": "End your current session on this device.",
+    "signOut": "Sign out",
+    "deleteTitle": "Delete account",
+    "deleteDescription": "Permanently delete your account, all your tickets, replies and ratings. This cannot be undone.",
+    "deleteAccount": "Delete my account",
+    "deleteNow": "Yes, delete permanently",
+    "deleting": "Deleting...",
+    "deleteConfirm": "Click again to confirm. This is your last chance to cancel."
+  },
+  "NotificationPrefs": {
+    "title": "Notifications",
+    "subtitle": "Choose which emails we send you. In-app notifications are always on.",
+    "replies": "New replies",
+    "repliesHint": "When someone replies to a ticket you're involved in.",
+    "mentions": "Mentions",
+    "mentionsHint": "When someone mentions you with @ in a reply.",
+    "status": "Status changes",
+    "statusHint": "When a ticket you created changes status.",
+    "csat": "CSAT requests",
+    "csatHint": "When a ticket you created is resolved.",
+    "assign": "Assignments",
+    "assignHint": "When a ticket is assigned to you.",
+    "save": "Save preferences",
+    "saving": "Saving...",
+    "saved": "Preferences saved."
+  },
+  "Errors": {
+    "title": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "retry": "Try again",
+    "home": "Go home",
+    "back": "Go back",
+    "appTitle": "Couldn't load this page",
+    "appDescription": "We hit a snag rendering this page. Try again or go back.",
+    "notFound": {
+      "title": "Page not found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "home": "Go home",
+      "signIn": "Sign in"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "es": "Spanish"
+  },
+  "Auth": {
+    "signIn": {
+      "title": "Sign in to your account",
+      "subtitle": "Enter your email to receive a sign-in link",
+      "email": "Email",
+      "submit": "Send sign-in link",
+      "submitting": "Sending...",
+      "or": "Or continue with",
+      "google": "Google",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "checkEmailTitle": "Check your email",
+      "checkEmailDescription": "We sent you a sign-in link. Click it to access your account."
+    },
+    "signUp": {
+      "title": "Create your account",
+      "subtitle": "Enter your email to get started. You'll create your organization next.",
+      "email": "Email",
+      "submit": "Create account",
+      "submitting": "Creating...",
+      "or": "Or continue with",
+      "google": "Google",
+      "haveAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "checkEmailTitle": "Check your email",
+      "checkEmailDescription": "We sent you a confirmation link. Click it to finish creating your account."
+    },
+    "verify": {
+      "title": "Check your email",
+      "description": "A sign-in link has been sent to your email address.",
+      "back": "Back to sign in"
+    }
+  },
+  "Onboarding": {
+    "title": "Create your organization",
+    "subtitle": "Set up your support workspace. You'll be the admin.",
+    "nameLabel": "Organization name",
+    "namePlaceholder": "Acme Support",
+    "nameDescription": "The display name shown to your team and customers.",
+    "slugLabel": "URL slug",
+    "slugPlaceholder": "acme-support",
+    "slugDescription": "Used in your workspace URL: tickets-app.com/app/your-slug",
+    "submit": "Create organization",
+    "submitting": "Creating..."
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Welcome to the {orgSlug} workspace.",
+    "subtitleCustomer": "Your tickets at a glance.",
+    "subtitleAgent": "Your assigned work and team metrics.",
+    "subtitleAdmin": "Organization-wide overview.",
+    "kpis": {
+      "open": "Open",
+      "inProgress": "In progress",
+      "waitingCustomer": "Waiting on you",
+      "resolved": "Resolved",
+      "myAssigned": "My assigned",
+      "myUnanswered": "Awaiting first reply",
+      "myUnansweredHint": "Tickets where you haven't responded yet",
+      "resolvedTotal": "Resolved total",
+      "totalOpen": "Open total",
+      "csat": "CSAT",
+      "csatHint": "Average of {count} ratings",
+      "csatEmpty": "No ratings yet",
+      "totalAll": "All tickets"
+    }
+  },
+  "Reports": {
+    "title": "Reports",
+    "subtitle": "Insights about your support volume and team performance.",
+    "adminOnly": "Agent performance is visible to admins only."
+  },
+  "Tickets": {
+    "create": {
+      "title": "New ticket",
+      "subtitle": "Tell us what's going on and we'll get back to you.",
+      "formTitle": "Ticket details",
+      "subjectLabel": "Subject",
+      "subjectPlaceholder": "Brief summary of the issue",
+      "subjectDescription": "A short, clear title for the ticket.",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "What happened? What did you expect? Any steps to reproduce?",
+      "descriptionDescription": "Include as much detail as possible.",
+      "priorityLabel": "Priority",
+      "priorityPlaceholder": "Select priority",
+      "priorityDescription": "How urgent is this issue?",
+      "priorities": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "URGENT": "Urgent"
+      },
+      "submit": "Create ticket",
+      "submitting": "Creating..."
+    },
+    "list": {
+      "title": "Tickets",
+      "subtitle": "Browse and manage support tickets for this organization.",
+      "newTicket": "New ticket",
+      "exportCsv": "Export CSV",
+      "empty": "No tickets found. Create one to get started.",
+      "columns": {
+        "subject": "Subject",
+        "status": "Status",
+        "priority": "Priority",
+        "customer": "Customer",
+        "created": "Created"
+      }
+    },
+    "filters": {
+      "searchPlaceholder": "Search subject...",
+      "search": "Search",
+      "statusPlaceholder": "Status",
+      "priorityPlaceholder": "Priority",
+      "allStatuses": "All statuses",
+      "allPriorities": "All priorities",
+      "showMine": "My tickets",
+      "showAll": "All tickets",
+      "statuses": {
+        "OPEN": "Open",
+        "IN_PROGRESS": "In progress",
+        "WAITING_CUSTOMER": "Waiting",
+        "RESOLVED": "Resolved",
+        "CLOSED": "Closed"
+      },
+      "priorities": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "URGENT": "Urgent"
+      }
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "loadMore": "Load more",
+    "detail": {
+      "backToList": "Back to tickets",
+      "openedBy": "Opened by {name} on {date}",
+      "customer": "Customer",
+      "assignee": "Assigned to",
+      "unassigned": "Unassigned",
+      "description": "Description"
+    },
+    "controls": {
+      "statusLabel": "Status",
+      "priorityLabel": "Priority",
+      "assigneeLabel": "Assignee",
+      "changeStatus": "Change status",
+      "apply": "Apply",
+      "reopenReason": "Reason for reopening",
+      "unassigned": "Unassigned",
+      "statuses": {
+        "OPEN": "Open",
+        "IN_PROGRESS": "In progress",
+        "WAITING_CUSTOMER": "Waiting",
+        "RESOLVED": "Resolved",
+        "CLOSED": "Closed"
+      },
+      "priorities": {
+        "LOW": "Low",
+        "MEDIUM": "Medium",
+        "HIGH": "High",
+        "URGENT": "Urgent"
+      }
+    }
+  },
+  "Replies": {
+    "conversation": "Conversation",
+    "noReplies": "No replies yet.",
+    "placeholder": "Type your reply...",
+    "submit": "Send reply",
+    "submitting": "Sending...",
+    "internal": "Internal note",
+    "internalNote": "Internal note (only visible to staff)",
+    "cannedResponses": "Canned responses",
+    "noCanned": "No canned responses yet."
+  },
+  "Realtime": {
+    "newReply": "New reply",
+    "publicReplyAdded": "{name} replied to this ticket",
+    "internalNoteAdded": "An internal note was added",
+    "newTicket": "New ticket created",
+    "assignedToYou": "A ticket was assigned to you"
+  },
+  "MyTickets": {
+    "title": "My tickets",
+    "subtitle": "Tickets you have created.",
+    "newTicket": "New ticket",
+    "empty": "You haven't created any tickets yet.",
+    "loadMore": "Load more",
+    "columns": {
+      "subject": "Subject",
+      "status": "Status",
+      "priority": "Priority",
+      "created": "Created"
+    }
+  },
+  "Rating": {
+    "prompt": "How was your experience?",
+    "description": "Your ticket was marked as resolved. Please rate the support you received.",
+    "commentPlaceholder": "Add a comment (optional)...",
+    "submit": "Submit rating",
+    "submitting": "Submitting...",
+    "thanks": "Thank you for your feedback!",
+    "thanksDescription": "Your rating helps us improve the support experience.",
+    "thanksShort": "Thanks for your feedback",
+    "yourRating": "Your rating"
+  },
+  "Members": {
+    "title": "Members",
+    "subtitle": "Manage who has access to this organization.",
+    "inviteTitle": "Invite a member",
+    "emailPlaceholder": "user@example.com",
+    "invite": "Send invite",
+    "inviting": "Sending...",
+    "inviteCreated": "Invite created. Share this link:",
+    "remove": "Remove",
+    "you": "you",
+    "pending": "Pending",
+    "adminOnly": "Only admins can change settings.",
+    "legend": "Total admins: {count}",
+    "columns": {
+      "member": "Member",
+      "role": "Role",
+      "joined": "Joined",
+      "actions": "Actions"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "AGENT": "Agent",
+      "CUSTOMER": "Customer"
+    }
+  },
+  "Settings": {
+    "title": "Settings",
+    "subtitle": "Organization name, URL and branding.",
+    "name": "Organization name",
+    "slug": "URL slug",
+    "slugDescription": "Used in your workspace URL. Changing this will redirect existing links.",
+    "primaryColor": "Primary color",
+    "logo": "Logo URL",
+    "logoDescription": "Square image, recommended 256×256px.",
+    "save": "Save changes",
+    "saving": "Saving...",
+    "saved": "Settings saved."
+  },
+  "Tags": {
+    "title": "Tags",
+    "subtitle": "Organize tickets with labels.",
+    "newTag": "New tag",
+    "namePlaceholder": "e.g. Billing",
+    "create": "Create",
+    "empty": "No tags yet.",
+    "columns": {
+      "name": "Name",
+      "color": "Color",
+      "actions": "Actions"
+    }
+  },
+  "CannedResponses": {
+    "title": "Canned responses",
+    "subtitle": "Reusable replies for common questions.",
+    "newCanned": "New canned response",
+    "titlePlaceholder": "e.g. Greeting",
+    "bodyPlaceholder": "Hi! Thanks for reaching out...",
+    "create": "Create",
+    "empty": "No canned responses yet.",
+    "columns": {
+      "title": "Title",
+      "body": "Body",
+      "actions": "Actions"
+    }
+  },
+  "Join": {
+    "title": "You've been invited",
+    "subtitle": "{inviter} invited you to join {org}.",
+    "join": "Accept invite",
+    "joining": "Joining...",
+    "invalidTitle": "Invite not found",
+    "invalid": "This invite may have expired or already been used.",
+    "wrongAccount": "This invite is for {expected}, but you're signed in as {current}. Sign out and sign in with the right account."
+  },
+  "Notifications": {
+    "title": "Notifications",
+    "empty": "No notifications yet.",
+    "markAllRead": "Mark all read"
+  },
+  "Csat": {
+    "prompt": "How did we do?",
+    "subjectLabel": "Tell us how we handled \u201C{subject}\u201D.",
+    "more": "+{count} more awaiting your feedback",
+    "rate": "Rate now",
+    "dismiss": "Dismiss"
+  },
+  "Webhooks": {
+    "title": "Webhooks",
+    "subtitle": "Send HTTP callbacks to your own services when events happen.",
+    "url": "Endpoint URL",
+    "events": "Events",
+    "create": "Create webhook",
+    "creating": "Creating...",
+    "created": "Webhook created.",
+    "empty": "No webhooks yet.",
+    "confirmDelete": "Delete this webhook?",
+    "delete": "Delete",
+    "disable": "Disable",
+    "enable": "Enable",
+    "lastCall": "last call {when}",
+    "recentDeliveries": "Recent deliveries",
+    "noDeliveries": "No deliveries yet."
+  },
+  "TwoFactor": {
+    "title": "Two-factor authentication",
+    "enabledDescription": "2FA is on. You'll be asked for a code on risky actions.",
+    "disabledDescription": "2FA is off. We recommend enabling it for extra security.",
+    "enable": "Enable 2FA",
+    "disable": "Disable 2FA",
+    "disabling": "Disabling...",
+    "disabled": "2FA disabled.",
+    "enabled": "2FA enabled!",
+    "scanQR": "Scan this QR with your authenticator app (Google Authenticator, 1Password, etc.) or enter the code manually.",
+    "qrAlt": "2FA QR code",
+    "manualCode": "Manual entry code: {code}",
+    "confirmCodeLabel": "Enter the 6-digit code from your app",
+    "verify": "Verify",
+    "verifying": "Verifying...",
+    "disableCodeLabel": "Enter a code from your authenticator to confirm"
+  },
+  "SavedViews": {
+    "label": "Saved views",
+    "saved": "Saved",
+    "saveCurrent": "Save current filters",
+    "noFiltersToSave": "Apply filters to save",
+    "promptName": "Name for this view:",
+    "delete": "Delete view"
+  },
+  "Trash": {
+    "title": "Trash",
+    "subtitle": "Soft-deleted tickets. Restore to bring them back, or purge to remove permanently.",
+    "restore": "Restore",
+    "purge": "Delete forever",
+    "confirmPurge": "Permanently delete this ticket and all its replies? This cannot be undone.",
+    "empty": "The trash is empty.",
+    "columns": {
+      "subject": "Subject",
+      "customer": "Customer",
+      "deletedAt": "Deleted at",
+      "actions": "Actions"
+    }
+  },
+  "Activity": {
+    "title": "Activity",
+    "subtitle": "Recent events in this organization.",
+    "empty": "No activity yet.",
+    "actor": "Actor",
+    "action": "Action",
+    "range": "Range",
+    "anyActor": "Any actor",
+    "anyAction": "Any action",
+    "anyTime": "Any time",
+    "clear": "Clear filters",
+    "actions": {
+      "TICKET_CREATED": "Ticket created",
+      "TICKET_ASSIGNED": "Ticket assigned",
+      "TICKET_UNASSIGNED": "Ticket unassigned",
+      "STATUS_CHANGED": "Status changed",
+      "PRIORITY_CHANGED": "Priority changed",
+      "REPLY_ADDED": "Reply added",
+      "INTERNAL_NOTE_ADDED": "Internal note added",
+      "TAG_ADDED": "Tag added",
+      "TAG_REMOVED": "Tag removed",
+      "TICKET_REOPENED": "Ticket reopened",
+      "TICKET_RESOLVED": "Ticket resolved",
+      "TICKET_CLOSED": "Ticket closed",
+      "MEMBER_INVITED": "Member invited",
+      "MEMBER_JOINED": "Member joined",
+      "MEMBER_REMOVED": "Member removed",
+      "ROLE_CHANGED": "Role changed"
+    }
+  }
+}

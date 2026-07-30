@@ -1,0 +1,175 @@
+@import 'tailwindcss';
+
+:root {
+  --canvas: #0b1212;
+  --surface: #101c1b;
+  --surface-raised: #162725;
+  --line: rgba(214, 255, 242, 0.1);
+  --text: #eefbf6;
+  --muted: #8ca59e;
+  --accent: #4ea5ff;
+  --accent-strong: #2377d4;
+  --accent-ink: #071c33;
+  --accent-soft: rgba(78, 165, 255, 0.12);
+  --focus-ring: rgba(78, 165, 255, 0.3);
+  --coral: #ff8374;
+  --elevation-card: 0 14px 34px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  --elevation-raised: 0 22px 52px rgba(0, 0, 0, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  --ease-serene: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Semantic design-system roles. Use these names in new UI, never raw palette values. */
+@theme inline {
+  --color-finance-canvas: var(--canvas);
+  --color-finance-surface: var(--surface);
+  --color-finance-raised: var(--surface-raised);
+  --color-finance-text: var(--text);
+  --color-finance-muted: var(--muted);
+  --color-finance-accent: var(--accent);
+  --color-finance-accent-strong: var(--accent-strong);
+  --color-finance-danger: var(--coral);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--canvas);
+  overflow-x: hidden;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 80% -10%, rgba(78, 165, 255, 0.16), transparent 30rem),
+    radial-gradient(circle at -10% 20%, rgba(35, 119, 212, 0.1), transparent 26rem),
+    var(--canvas);
+  color: var(--text);
+  font-family: Aptos, "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* Reusable primitives: cards carry surface/elevation; fields carry focus; actions own states. */
+.ui-card {
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  box-shadow: var(--elevation-card);
+}
+
+.ui-field {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: color-mix(in srgb, white 5%, transparent);
+  padding: 0.75rem 0.875rem;
+  color: var(--text);
+  outline: none;
+}
+
+.ui-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+.ui-button-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  background: var(--accent);
+  padding: 0.75rem 1rem;
+  color: var(--accent-ink);
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(78, 165, 255, 0.18);
+  transition: background-color 160ms var(--ease-serene), box-shadow 160ms var(--ease-serene);
+}
+
+.ui-button-primary:hover:not(:disabled) {
+  background: var(--accent-strong);
+  color: var(--text);
+}
+
+.ui-button-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+main,
+section,
+article,
+form,
+label {
+  min-width: 0;
+}
+
+h1,
+h2,
+h3,
+p,
+label,
+button {
+  overflow-wrap: anywhere;
+}
+
+::selection {
+  background: rgba(78, 165, 255, 0.38);
+  color: white;
+}
+
+/* Temporary compatibility bridge for un-migrated legacy markup. New UI must use the semantic roles above. */
+.bg-\[\#5ee8b2\] { background-color: var(--accent) !important; }
+.text-\[\#5ee8b2\] { color: var(--accent) !important; }
+.border-\[\#5ee8b2\]\/20 { border-color: rgba(78, 165, 255, 0.2) !important; }
+.border-\[\#5ee8b2\]\/40 { border-color: rgba(78, 165, 255, 0.4) !important; }
+.bg-\[\#5ee8b2\]\/8 { background-color: rgba(78, 165, 255, 0.08) !important; }
+.bg-\[\#5ee8b2\]\/10 { background-color: rgba(78, 165, 255, 0.1) !important; }
+.hover\:bg-\[\#8df2cc\]:hover { background-color: var(--accent-strong) !important; }
+.focus\:border-\[\#5ee8b2\]:focus { border-color: var(--accent) !important; }
+
+/* The dark shell gets a shared, intentional material lift. */
+.bg-\[\#101c1b\]\/80,
+.bg-\[\#101c1b\]\/95 {
+  box-shadow: var(--elevation-card);
+}
+
+.bg-\[\#101c1b\]\/95 {
+  box-shadow: var(--elevation-raised);
+}
+
+button,
+a,
+input,
+select {
+  transition-timing-function: var(--ease-serene);
+}
+
+input:focus,
+select:focus,
+button:focus-visible,
+a:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

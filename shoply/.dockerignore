@@ -1,0 +1,19 @@
+# Docker
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.local
+.env.*.local
+README.md
+Dockerfile
+docker-compose.yml
+.dockerignore
+*.log
+.DS_Store
+tests
+playwright-report
+test-results
+coverage
+prisma/dev.db*

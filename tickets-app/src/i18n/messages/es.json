@@ -1,0 +1,456 @@
+{
+  "Home": {
+    "title": "Tickets App",
+    "subtitle": "Sistema de tickets de soporte multi-tenant",
+    "getStarted": "Comenzar",
+    "signIn": "Iniciar sesión"
+  },
+  "Common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "cancel": "Cancelar"
+  },
+  "Profile": {
+    "title": "Perfil",
+    "subtitle": "Gestiona tu nombre, idioma y cierra sesión.",
+    "email": "Email",
+    "emailHint": "El email no se puede cambiar aquí. Contacta a un admin si lo necesitas.",
+    "name": "Nombre",
+    "preferredLocale": "Idioma preferido",
+    "preferredLocaleHint": "Afecta los emails y notificaciones que recibes.",
+    "languages": {
+      "en": "Inglés",
+      "es": "Español"
+    },
+    "saved": "Perfil guardado.",
+    "signOutTitle": "Cerrar sesión",
+    "signOutDescription": "Termina tu sesión actual en este dispositivo.",
+    "signOut": "Cerrar sesión",
+    "deleteTitle": "Eliminar cuenta",
+    "deleteDescription": "Elimina permanentemente tu cuenta, todos tus tickets, respuestas y calificaciones. Esto no se puede deshacer.",
+    "deleteAccount": "Eliminar mi cuenta",
+    "deleteNow": "Sí, eliminar permanentemente",
+    "deleting": "Eliminando...",
+    "deleteConfirm": "Haz clic de nuevo para confirmar. Esta es tu última oportunidad para cancelar."
+  },
+  "NotificationPrefs": {
+    "title": "Notificaciones",
+    "subtitle": "Elige qué emails te enviamos. Las notificaciones in-app siempre están activas.",
+    "replies": "Nuevas respuestas",
+    "repliesHint": "Cuando alguien responde a un ticket en el que participas.",
+    "mentions": "Menciones",
+    "mentionsHint": "Cuando alguien te menciona con @ en una respuesta.",
+    "status": "Cambios de estado",
+    "statusHint": "Cuando un ticket que creaste cambia de estado.",
+    "csat": "Solicitudes de CSAT",
+    "csatHint": "Cuando un ticket que creaste se resuelve.",
+    "assign": "Asignaciones",
+    "assignHint": "Cuando te asignan un ticket.",
+    "save": "Guardar preferencias",
+    "saving": "Guardando...",
+    "saved": "Preferencias guardadas."
+  },
+  "Errors": {
+    "title": "Algo salió mal",
+    "description": "Ocurrió un error inesperado. Por favor intenta de nuevo.",
+    "retry": "Reintentar",
+    "home": "Ir al inicio",
+    "back": "Volver",
+    "appTitle": "No se pudo cargar esta página",
+    "appDescription": "Tuvimos un problema al renderizar esta página. Reintenta o vuelve.",
+    "notFound": {
+      "title": "Página no encontrada",
+      "description": "La página que buscas no existe o fue movida.",
+      "home": "Ir al inicio",
+      "signIn": "Iniciar sesión"
+    }
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "en": "Inglés",
+    "es": "Español"
+  },
+  "Auth": {
+    "signIn": {
+      "title": "Inicia sesión en tu cuenta",
+      "subtitle": "Ingresa tu email para recibir un enlace de inicio de sesión",
+      "email": "Email",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando...",
+      "or": "O continúa con",
+      "google": "Google",
+      "noAccount": "¿No tienes cuenta?",
+      "signUp": "Regístrate",
+      "checkEmailTitle": "Revisa tu email",
+      "checkEmailDescription": "Te enviamos un enlace de inicio de sesión. Haz clic para acceder a tu cuenta."
+    },
+    "signUp": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Ingresa tu email para comenzar. Luego crearás tu organización.",
+      "email": "Email",
+      "submit": "Crear cuenta",
+      "submitting": "Creando...",
+      "or": "O continúa con",
+      "google": "Google",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "signIn": "Inicia sesión",
+      "checkEmailTitle": "Revisa tu email",
+      "checkEmailDescription": "Te enviamos un enlace de confirmación. Haz clic para terminar de crear tu cuenta."
+    },
+    "verify": {
+      "title": "Revisa tu email",
+      "description": "Hemos enviado un enlace de inicio de sesión a tu correo.",
+      "back": "Volver a inicio de sesión"
+    }
+  },
+  "Onboarding": {
+    "title": "Crea tu organización",
+    "subtitle": "Configura tu espacio de soporte. Serás el administrador.",
+    "nameLabel": "Nombre de la organización",
+    "namePlaceholder": "Soporte Acme",
+    "nameDescription": "El nombre visible para tu equipo y clientes.",
+    "slugLabel": "Slug de URL",
+    "slugPlaceholder": "soporte-acme",
+    "slugDescription": "Se usará en tu URL: tickets-app.com/app/tu-slug",
+    "submit": "Crear organización",
+    "submitting": "Creando..."
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Bienvenido al espacio de trabajo de {orgSlug}.",
+    "subtitleCustomer": "Tus tickets de un vistazo.",
+    "subtitleAgent": "Tu trabajo asignado y métricas del equipo.",
+    "subtitleAdmin": "Vista general de la organización.",
+    "kpis": {
+      "open": "Abiertos",
+      "inProgress": "En progreso",
+      "waitingCustomer": "Esperándote",
+      "resolved": "Resueltos",
+      "myAssigned": "Asignados a mí",
+      "myUnanswered": "Sin primera respuesta",
+      "myUnansweredHint": "Tickets donde aún no has respondido",
+      "resolvedTotal": "Resueltos total",
+      "totalOpen": "Abiertos total",
+      "csat": "CSAT",
+      "csatHint": "Promedio de {count} calificaciones",
+      "csatEmpty": "Aún no hay calificaciones",
+      "totalAll": "Todos los tickets"
+    }
+  },
+  "Reports": {
+    "title": "Reportes",
+    "subtitle": "Análisis de tu volumen de soporte y rendimiento del equipo.",
+    "adminOnly": "El rendimiento de los agentes solo es visible para admins."
+  },
+  "Tickets": {
+    "create": {
+      "title": "Nuevo ticket",
+      "subtitle": "Cuéntanos qué sucede y te responderemos pronto.",
+      "formTitle": "Detalles del ticket",
+      "subjectLabel": "Asunto",
+      "subjectPlaceholder": "Resumen breve del problema",
+      "subjectDescription": "Un título corto y claro para el ticket.",
+      "descriptionLabel": "Descripción",
+      "descriptionPlaceholder": "¿Qué pasó? ¿Qué esperabas? ¿Pasos para reproducir?",
+      "descriptionDescription": "Incluye tantos detalles como puedas.",
+      "priorityLabel": "Prioridad",
+      "priorityPlaceholder": "Selecciona prioridad",
+      "priorityDescription": "¿Qué tan urgente es este problema?",
+      "priorities": {
+        "LOW": "Baja",
+        "MEDIUM": "Media",
+        "HIGH": "Alta",
+        "URGENT": "Urgente"
+      },
+      "submit": "Crear ticket",
+      "submitting": "Creando..."
+    },
+    "list": {
+      "title": "Tickets",
+      "subtitle": "Explora y gestiona los tickets de soporte de esta organización.",
+      "newTicket": "Nuevo ticket",
+      "exportCsv": "Exportar CSV",
+      "empty": "No se encontraron tickets. Crea uno para comenzar.",
+      "columns": {
+        "subject": "Asunto",
+        "status": "Estado",
+        "priority": "Prioridad",
+        "customer": "Cliente",
+        "created": "Creado"
+      }
+    },
+    "filters": {
+      "searchPlaceholder": "Buscar asunto...",
+      "search": "Buscar",
+      "statusPlaceholder": "Estado",
+      "priorityPlaceholder": "Prioridad",
+      "allStatuses": "Todos los estados",
+      "allPriorities": "Todas las prioridades",
+      "showMine": "Mis tickets",
+      "showAll": "Todos los tickets",
+      "statuses": {
+        "OPEN": "Abierto",
+        "IN_PROGRESS": "En progreso",
+        "WAITING_CUSTOMER": "Esperando",
+        "RESOLVED": "Resuelto",
+        "CLOSED": "Cerrado"
+      },
+      "priorities": {
+        "LOW": "Baja",
+        "MEDIUM": "Media",
+        "HIGH": "Alta",
+        "URGENT": "Urgente"
+      }
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente"
+    },
+    "loadMore": "Cargar más",
+    "detail": {
+      "backToList": "Volver a tickets",
+      "openedBy": "Abierto por {name} el {date}",
+      "customer": "Cliente",
+      "assignee": "Asignado a",
+      "unassigned": "Sin asignar",
+      "description": "Descripción"
+    },
+    "controls": {
+      "statusLabel": "Estado",
+      "priorityLabel": "Prioridad",
+      "assigneeLabel": "Asignado a",
+      "changeStatus": "Cambiar estado",
+      "apply": "Aplicar",
+      "reopenReason": "Motivo de la reapertura",
+      "unassigned": "Sin asignar",
+      "statuses": {
+        "OPEN": "Abierto",
+        "IN_PROGRESS": "En progreso",
+        "WAITING_CUSTOMER": "Esperando",
+        "RESOLVED": "Resuelto",
+        "CLOSED": "Cerrado"
+      },
+      "priorities": {
+        "LOW": "Baja",
+        "MEDIUM": "Media",
+        "HIGH": "Alta",
+        "URGENT": "Urgente"
+      }
+    }
+  },
+  "Replies": {
+    "conversation": "Conversación",
+    "noReplies": "Aún no hay respuestas.",
+    "placeholder": "Escribe tu respuesta...",
+    "submit": "Enviar respuesta",
+    "submitting": "Enviando...",
+    "internal": "Nota interna",
+    "internalNote": "Nota interna (solo visible para el equipo)",
+    "cannedResponses": "Respuestas enlatadas",
+    "noCanned": "Aún no hay respuestas enlatadas."
+  },
+  "Realtime": {
+    "newReply": "Nueva respuesta",
+    "publicReplyAdded": "{name} respondió a este ticket",
+    "internalNoteAdded": "Se añadió una nota interna",
+    "newTicket": "Nuevo ticket creado",
+    "assignedToYou": "Un ticket fue asignado a ti"
+  },
+  "MyTickets": {
+    "title": "Mis tickets",
+    "subtitle": "Tickets que has creado.",
+    "newTicket": "Nuevo ticket",
+    "empty": "Aún no has creado ningún ticket.",
+    "loadMore": "Cargar más",
+    "columns": {
+      "subject": "Asunto",
+      "status": "Estado",
+      "priority": "Prioridad",
+      "created": "Creado"
+    }
+  },
+  "Rating": {
+    "prompt": "¿Cómo fue tu experiencia?",
+    "description": "Tu ticket fue marcado como resuelto. Por favor califica el soporte que recibiste.",
+    "commentPlaceholder": "Añade un comentario (opcional)...",
+    "submit": "Enviar calificación",
+    "submitting": "Enviando...",
+    "thanks": "¡Gracias por tu feedback!",
+    "thanksDescription": "Tu calificación nos ayuda a mejorar la experiencia de soporte.",
+    "thanksShort": "Gracias por tu feedback",
+    "yourRating": "Tu calificación"
+  },
+  "Members": {
+    "title": "Miembros",
+    "subtitle": "Gestiona quién tiene acceso a esta organización.",
+    "inviteTitle": "Invitar a un miembro",
+    "emailPlaceholder": "usuario@ejemplo.com",
+    "invite": "Enviar invitación",
+    "inviting": "Enviando...",
+    "inviteCreated": "Invitación creada. Comparte este enlace:",
+    "remove": "Eliminar",
+    "you": "tú",
+    "pending": "Pendiente",
+    "adminOnly": "Solo los admins pueden cambiar la configuración.",
+    "legend": "Total de admins: {count}",
+    "columns": {
+      "member": "Miembro",
+      "role": "Rol",
+      "joined": "Se unió",
+      "actions": "Acciones"
+    },
+    "roles": {
+      "ADMIN": "Admin",
+      "AGENT": "Agente",
+      "CUSTOMER": "Cliente"
+    }
+  },
+  "Settings": {
+    "title": "Configuración",
+    "subtitle": "Nombre de la organización, URL y branding.",
+    "name": "Nombre de la organización",
+    "slug": "Slug de URL",
+    "slugDescription": "Usado en la URL del espacio. Cambiar esto redirigirá los enlaces existentes.",
+    "primaryColor": "Color primario",
+    "logo": "URL del logo",
+    "logoDescription": "Imagen cuadrada, recomendado 256×256px.",
+    "save": "Guardar cambios",
+    "saving": "Guardando...",
+    "saved": "Configuración guardada."
+  },
+  "Tags": {
+    "title": "Etiquetas",
+    "subtitle": "Organiza los tickets con etiquetas.",
+    "newTag": "Nueva etiqueta",
+    "namePlaceholder": "ej. Facturación",
+    "create": "Crear",
+    "empty": "Aún no hay etiquetas.",
+    "columns": {
+      "name": "Nombre",
+      "color": "Color",
+      "actions": "Acciones"
+    }
+  },
+  "CannedResponses": {
+    "title": "Respuestas enlatadas",
+    "subtitle": "Respuestas reutilizables para preguntas comunes.",
+    "newCanned": "Nueva respuesta enlatada",
+    "titlePlaceholder": "ej. Saludo",
+    "bodyPlaceholder": "¡Hola! Gracias por contactarnos...",
+    "create": "Crear",
+    "empty": "Aún no hay respuestas enlatadas.",
+    "columns": {
+      "title": "Título",
+      "body": "Cuerpo",
+      "actions": "Acciones"
+    }
+  },
+  "Join": {
+    "title": "Has sido invitado",
+    "subtitle": "{inviter} te invitó a unirte a {org}.",
+    "join": "Aceptar invitación",
+    "joining": "Uniéndose...",
+    "invalidTitle": "Invitación no encontrada",
+    "invalid": "Esta invitación puede haber expirado o ya fue usada.",
+    "wrongAccount": "Esta invitación es para {expected}, pero estás conectado como {current}. Cierra sesión e inicia con la cuenta correcta."
+  },
+  "Notifications": {
+    "title": "Notificaciones",
+    "empty": "Aún no hay notificaciones.",
+    "markAllRead": "Marcar todo como leído"
+  },
+  "Csat": {
+    "prompt": "¿Cómo lo hicimos?",
+    "subjectLabel": "Cuéntanos cómo gestionamos \u201C{subject}\u201D.",
+    "more": "+{count} más esperando tu feedback",
+    "rate": "Calificar",
+    "dismiss": "Descartar"
+  },
+  "Webhooks": {
+    "title": "Webhooks",
+    "subtitle": "Envía callbacks HTTP a tus servicios cuando ocurran eventos.",
+    "url": "URL del endpoint",
+    "events": "Eventos",
+    "create": "Crear webhook",
+    "creating": "Creando...",
+    "created": "Webhook creado.",
+    "empty": "Aún no hay webhooks.",
+    "confirmDelete": "¿Eliminar este webhook?",
+    "delete": "Eliminar",
+    "disable": "Desactivar",
+    "enable": "Activar",
+    "lastCall": "última llamada {when}",
+    "recentDeliveries": "Entregas recientes",
+    "noDeliveries": "Aún no hay entregas."
+  },
+  "TwoFactor": {
+    "title": "Autenticación de dos factores",
+    "enabledDescription": "2FA está activo. Se te pedirá un código en acciones sensibles.",
+    "disabledDescription": "2FA está desactivado. Recomendamos activarlo para mayor seguridad.",
+    "enable": "Activar 2FA",
+    "disable": "Desactivar 2FA",
+    "disabling": "Desactivando...",
+    "disabled": "2FA desactivado.",
+    "enabled": "¡2FA activado!",
+    "scanQR": "Escanea este QR con tu app de autenticación (Google Authenticator, 1Password, etc.) o ingresa el código manualmente.",
+    "qrAlt": "Código QR de 2FA",
+    "manualCode": "Código manual: {code}",
+    "confirmCodeLabel": "Ingresa el código de 6 dígitos de tu app",
+    "verify": "Verificar",
+    "verifying": "Verificando...",
+    "disableCodeLabel": "Ingresa un código de tu autenticador para confirmar"
+  },
+  "SavedViews": {
+    "label": "Vistas guardadas",
+    "saved": "Guardadas",
+    "saveCurrent": "Guardar filtros actuales",
+    "noFiltersToSave": "Aplica filtros para guardar",
+    "promptName": "Nombre para esta vista:",
+    "delete": "Eliminar vista"
+  },
+  "Trash": {
+    "title": "Papelera",
+    "subtitle": "Tickets eliminados. Restaura para recuperarlos o elimina permanentemente.",
+    "restore": "Restaurar",
+    "purge": "Eliminar para siempre",
+    "confirmPurge": "¿Eliminar permanentemente este ticket y todas sus respuestas? No se puede deshacer.",
+    "empty": "La papelera está vacía.",
+    "columns": {
+      "subject": "Asunto",
+      "customer": "Cliente",
+      "deletedAt": "Eliminado el",
+      "actions": "Acciones"
+    }
+  },
+  "Activity": {
+    "title": "Actividad",
+    "subtitle": "Eventos recientes en esta organización.",
+    "empty": "Aún no hay actividad.",
+    "actor": "Actor",
+    "action": "Acción",
+    "range": "Periodo",
+    "anyActor": "Cualquier actor",
+    "anyAction": "Cualquier acción",
+    "anyTime": "Cualquier momento",
+    "clear": "Limpiar filtros",
+    "actions": {
+      "TICKET_CREATED": "Ticket creado",
+      "TICKET_ASSIGNED": "Ticket asignado",
+      "TICKET_UNASSIGNED": "Ticket desasignado",
+      "STATUS_CHANGED": "Estado cambiado",
+      "PRIORITY_CHANGED": "Prioridad cambiada",
+      "REPLY_ADDED": "Respuesta añadida",
+      "INTERNAL_NOTE_ADDED": "Nota interna añadida",
+      "TAG_ADDED": "Etiqueta añadida",
+      "TAG_REMOVED": "Etiqueta removida",
+      "TICKET_REOPENED": "Ticket reabierto",
+      "TICKET_RESOLVED": "Ticket resuelto",
+      "TICKET_CLOSED": "Ticket cerrado",
+      "MEMBER_INVITED": "Miembro invitado",
+      "MEMBER_JOINED": "Miembro se unió",
+      "MEMBER_REMOVED": "Miembro removido",
+      "ROLE_CHANGED": "Rol cambiado"
+    }
+  }
+}
