@@ -22,17 +22,17 @@ export interface ContributeGoalResult {
  */
 export function makeContributeGoal(deps: ContributeGoalDeps) {
   return async (
-    userId: string,
+    financialSpaceId: string,
     goalId: string,
     input: ContributeGoalInput
   ): Promise<ContributeGoalResult> => {
     const goal = await deps.goalRepo.findById(goalId)
-    if (!goal || goal.userId !== userId) {
+    if (!goal || goal.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Goal')
     }
 
     const account = await deps.accountRepo.findById(input.accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
     if (!account.canWithdraw(input.amount)) {
@@ -49,7 +49,7 @@ export function makeContributeGoal(deps: ContributeGoalDeps) {
       date: new Date(),
       categoryId: null,
       accountId: account.id,
-      userId,
+      financialSpaceId,
     })
 
     await deps.transactionRepo.create(transaction)

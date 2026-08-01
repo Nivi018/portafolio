@@ -6,6 +6,7 @@ import type {
   TransactionSummary,
   CategoryTotal,
   MonthlyFlowPoint,
+  MonthlyCategoryTotal,
   Transaction,
   DateRange,
 } from "@finance/domain"
@@ -23,12 +24,12 @@ export class PrismaTransactionRepository implements ITransactionRepository {
     return row ? toDomainTransaction(row) : null
   }
 
-  async findByUserId(
-    userId: string,
+  async findByFinancialSpaceId(
+    financialSpaceId: string,
     filters: TransactionFilters
   ): Promise<PaginatedResult<Transaction>> {
     const where = {
-      userId,
+      financialSpaceId,
       ...(filters.type ? { type: filters.type } : {}),
       ...(filters.categoryId ? { categoryId: filters.categoryId } : {}),
       ...(filters.accountId ? { accountId: filters.accountId } : {}),
@@ -66,7 +67,7 @@ export class PrismaTransactionRepository implements ITransactionRepository {
         date: transaction.date,
         categoryId: transaction.categoryId,
         accountId: transaction.accountId,
-        userId: transaction.userId,
+        financialSpaceId: transaction.financialSpaceId,
         recurringId: transaction.recurringId,
         createdAt: transaction.createdAt,
       },
@@ -93,10 +94,10 @@ export class PrismaTransactionRepository implements ITransactionRepository {
     await this.prisma.transaction.delete({ where: { id } })
   }
 
-  async getSummary(userId: string, range: DateRange): Promise<TransactionSummary> {
+  async getSummary(financialSpaceId: string, range: DateRange): Promise<TransactionSummary> {
     const grouped = await this.prisma.transaction.groupBy({
       by: ["type"],
-      where: { userId, date: { gte: range.from, lte: range.to } },
+      where: { financialSpaceId, date: { gte: range.from, lte: range.to } },
       _sum: { amount: true },
       _count: { _all: true },
     })
@@ -121,14 +122,14 @@ export class PrismaTransactionRepository implements ITransactionRepository {
   }
 
   async getCategoryTotals(
-    userId: string,
+    financialSpaceId: string,
     range: DateRange,
     type: TransactionType
   ): Promise<CategoryTotal[]> {
     const grouped = await this.prisma.transaction.groupBy({
       by: ["categoryId"],
       where: {
-        userId,
+        financialSpaceId,
         type,
         categoryId: { not: null },
         date: { gte: range.from, lte: range.to },
@@ -164,7 +165,7 @@ export class PrismaTransactionRepository implements ITransactionRepository {
       .sort((a, b) => b.total - a.total)
   }
 
-  async getMonthlyFlow(userId: string, months: number): Promise<MonthlyFlowPoint[]> {
+  async getMonthlyFlow(financialSpaceId: string, months: number): Promise<MonthlyFlowPoint[]> {
     const now = new Date()
     const from = new Date(now.getFullYear(), now.getMonth() - (months - 1), 1)
 
@@ -176,7 +177,7 @@ export class PrismaTransactionRepository implements ITransactionRepository {
         COALESCE(SUM(CASE WHEN t."type" = 'INCOME' THEN t."amount" END), 0)::float AS income,
         COALESCE(SUM(CASE WHEN t."type" = 'EXPENSE' THEN t."amount" END), 0)::float AS expense
       FROM "transaction" t
-      WHERE t."userId" = ${userId} AND t."date" >= ${from}
+      WHERE t."financialSpaceId" = ${financialSpaceId} AND t."date" >= ${from}
       GROUP BY 1
       ORDER BY 1
     `
@@ -193,19 +194,38 @@ export class PrismaTransactionRepository implements ITransactionRepository {
     return result
   }
 
-  async getRecentByUserId(userId: string, limit: number): Promise<Transaction[]> {
+  async getMonthlyCategoryTotals(
+    financialSpaceId: string,
+    range: DateRange
+  ): Promise<MonthlyCategoryTotal[]> {
+    return this.prisma.$queryRaw<MonthlyCategoryTotal[]>`
+      SELECT
+        to_char(t."date", 'YYYY-MM') AS month,
+        t."type",
+        t."categoryId",
+        COALESCE(SUM(t."amount"), 0)::float AS total
+      FROM "transaction" t
+      WHERE t."financialSpaceId" = ${financialSpaceId}
+        AND t."date" >= ${range.from}
+        AND t."date" <= ${range.to}
+      GROUP BY 1, 2, 3
+      ORDER BY 1, 2, 3
+    `
+  }
+
+  async getRecentByFinancialSpaceId(financialSpaceId: string, limit: number): Promise<Transaction[]> {
     const rows = await this.prisma.transaction.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { date: "desc" },
       take: limit,
     })
     return rows.map(toDomainTransaction)
   }
 
-  async getTotalSpent(userId: string, range: DateRange, categoryId?: string): Promise<number> {
+  async getTotalSpent(financialSpaceId: string, range: DateRange, categoryId?: string): Promise<number> {
     const agg = await this.prisma.transaction.aggregate({
       where: {
-        userId,
+        financialSpaceId,
         type: "EXPENSE",
         date: { gte: range.from, lte: range.to },
         ...(categoryId ? { categoryId } : {}),

@@ -15,7 +15,7 @@ describe('budget use cases', () => {
       icon: 'utensils',
       color: '#f97316',
       type: 'EXPENSE',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.categoryRepo.items.push(category)
 
@@ -38,7 +38,7 @@ describe('budget use cases', () => {
       icon: 'briefcase',
       color: '#22c55e',
       type: 'INCOME',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.categoryRepo.items.push(category)
 
@@ -60,14 +60,14 @@ describe('budget use cases', () => {
       type: 'CHECKING',
       balance: 10000,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     const category = Category.create({
       name: 'Alimentación',
       icon: 'utensils',
       color: '#f97316',
       type: 'EXPENSE',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.accountRepo.items.push(account)
     deps.categoryRepo.items.push(category)
@@ -76,7 +76,7 @@ describe('budget use cases', () => {
       amount: 1000,
       period: 'MONTHLY',
       categoryId: category.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.budgetRepo.items.push(budget)
 
@@ -86,7 +86,7 @@ describe('budget use cases', () => {
       type: 'EXPENSE',
       categoryId: category.id,
       accountId: account.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
       date: new Date(),
     })
     deps.transactionRepo.items.push(tx)
@@ -107,14 +107,14 @@ describe('budget use cases', () => {
       type: 'CHECKING',
       balance: 10000,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     const category = Category.create({
       name: 'Compras',
       icon: 'shopping-bag',
       color: '#84cc16',
       type: 'EXPENSE',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.accountRepo.items.push(account)
     deps.categoryRepo.items.push(category)
@@ -123,7 +123,7 @@ describe('budget use cases', () => {
       amount: 500,
       period: 'MONTHLY',
       categoryId: category.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.budgetRepo.items.push(budget)
 
@@ -133,7 +133,7 @@ describe('budget use cases', () => {
         type: 'EXPENSE',
         categoryId: category.id,
         accountId: account.id,
-        userId: USER_ID,
+        financialSpaceId: USER_ID,
         date: new Date(),
       })
     )

@@ -9,10 +9,10 @@ export interface CreateBudgetDeps {
 }
 
 export function makeCreateBudget(deps: CreateBudgetDeps) {
-  return async (userId: string, input: CreateBudgetInput): Promise<Budget> => {
+  return async (financialSpaceId: string, input: CreateBudgetInput): Promise<Budget> => {
     if (input.categoryId) {
       const category = await deps.categoryRepo.findById(input.categoryId)
-      if (!category || category.userId !== userId) {
+      if (!category || category.financialSpaceId !== financialSpaceId) {
         throw new NotFoundException('Category')
       }
       if (category.type !== 'EXPENSE') {
@@ -20,7 +20,7 @@ export function makeCreateBudget(deps: CreateBudgetDeps) {
       }
     }
 
-    const budget = Budget.create({ ...input, userId })
+    const budget = Budget.create({ ...input, financialSpaceId })
     return deps.budgetRepo.create(budget)
   }
 }

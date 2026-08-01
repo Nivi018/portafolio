@@ -6,7 +6,7 @@ export interface GetAccountsDeps {
 }
 
 export function makeGetAccounts(deps: GetAccountsDeps) {
-  return async (userId: string): Promise<Account[]> => {
-    return deps.accountRepo.findByUserId(userId)
+  return async (financialSpaceId: string): Promise<Account[]> => {
+    return deps.accountRepo.findByFinancialSpaceId(financialSpaceId)
   }
 }

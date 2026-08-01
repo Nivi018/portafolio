@@ -8,9 +8,13 @@ export interface UpdateAccountDeps {
 }
 
 export function makeUpdateAccount(deps: UpdateAccountDeps) {
-  return async (userId: string, accountId: string, input: UpdateAccountInput): Promise<Account> => {
+  return async (
+    financialSpaceId: string,
+    accountId: string,
+    input: UpdateAccountInput
+  ): Promise<Account> => {
     const account = await deps.accountRepo.findById(accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 

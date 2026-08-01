@@ -7,10 +7,10 @@ export interface GetCategoriesDeps {
 }
 
 export function makeGetCategories(deps: GetCategoriesDeps) {
-  return async (userId: string, type?: CategoryType): Promise<Category[]> => {
+  return async (financialSpaceId: string, type?: CategoryType): Promise<Category[]> => {
     if (type) {
-      return deps.categoryRepo.findByUserIdAndType(userId, type)
+      return deps.categoryRepo.findByFinancialSpaceIdAndType(financialSpaceId, type)
     }
-    return deps.categoryRepo.findByUserId(userId)
+    return deps.categoryRepo.findByFinancialSpaceId(financialSpaceId)
   }
 }

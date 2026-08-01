@@ -10,9 +10,9 @@ export class PrismaBudgetRepository implements IBudgetRepository {
     return row ? toDomainBudget(row) : null
   }
 
-  async findByUserId(userId: string): Promise<Budget[]> {
+  async findByFinancialSpaceId(financialSpaceId: string): Promise<Budget[]> {
     const rows = await this.prisma.budget.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { createdAt: "desc" },
     })
     return rows.map(toDomainBudget)
@@ -22,7 +22,7 @@ export class PrismaBudgetRepository implements IBudgetRepository {
     const row = await this.prisma.budget.create({
       data: {
         id: budget.id,
-        userId: budget.userId,
+        financialSpaceId: budget.financialSpaceId,
         amount: budget.amount,
         period: budget.period,
         categoryId: budget.categoryId,

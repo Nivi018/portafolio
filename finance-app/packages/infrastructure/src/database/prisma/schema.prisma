@@ -24,13 +24,7 @@ model User {
   sessions Session[]
   accounts Account[]
 
-  // Domain relations
-  financeAccounts      FinanceAccount[]
-  transactions         Transaction[]
-  budgets              Budget[]
-  goals                Goal[]
-  categories           Category[]
-  recurringTransactions RecurringTransaction[]
+  financialSpaceMemberships FinancialSpaceMember[]
 
   @@map("user")
 }
@@ -90,22 +84,59 @@ model Verification {
 // at the domain layer (shared constants = source of truth)
 // ============================================
 
+model FinancialSpace {
+  id        String   @id @default(cuid())
+  name      String
+  type      String   @default("PERSONAL")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members               FinancialSpaceMember[]
+  categories            Category[]
+  financeAccounts       FinanceAccount[]
+  transactions          Transaction[]
+  budgets               Budget[]
+  goals                 Goal[]
+  loans                 Loan[]
+  assets                Asset[]
+  planItems             PlanItem[]
+  recurringTransactions RecurringTransaction[]
+
+  @@map("financial_space")
+}
+
+model FinancialSpaceMember {
+  id               String   @id @default(cuid())
+  financialSpaceId String
+  userId           String
+  role             String   @default("MEMBER")
+  createdAt        DateTime @default(now())
+
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([financialSpaceId, userId])
+  @@index([userId])
+  @@map("financial_space_member")
+}
+
 model Category {
   id        String   @id @default(cuid())
   name      String
   icon      String   @default("wallet")
   color     String   @default("#38bdf8")
   type      String // INCOME | EXPENSE
-  userId    String
+  financialSpaceId String
   createdAt DateTime @default(now())
 
-  user         User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
   transactions Transaction[]
   budgets      Budget[]
+  planItems    PlanItem[]
   recurring    RecurringTransaction[]
 
-  @@unique([name, userId])
-  @@index([userId])
+  @@unique([name, financialSpaceId])
+  @@index([financialSpaceId])
   @@map("category")
 }
 
@@ -115,16 +146,35 @@ model FinanceAccount {
   type      String // CHECKING | SAVINGS | CASH | CREDIT
   balance   Float    @default(0)
   currency  String   @default("MXN")
-  userId    String
+  financialSpaceId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user         User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
+  creditCardProfile CreditCardProfile?
   transactions Transaction[]
+  planItems    PlanItem[]
   recurring    RecurringTransaction[]
 
-  @@index([userId])
+  @@index([financialSpaceId])
   @@map("finance_account")
+}
+
+model CreditCardProfile {
+  id                String   @id @default(cuid())
+  accountId         String   @unique
+  bank              String
+  product           String
+  creditLimit       Float
+  apr               Float
+  statementCloseDay Int
+  paymentDueDay     Int
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  account FinanceAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@map("credit_card_profile")
 }
 
 model Transaction {
@@ -135,20 +185,89 @@ model Transaction {
   date        DateTime @default(now())
   categoryId  String?
   accountId   String
-  userId      String
+  financialSpaceId String
   recurringId String?
   createdAt   DateTime @default(now())
 
-  user      User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace  @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
   category  Category?             @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   account   FinanceAccount        @relation(fields: [accountId], references: [id], onDelete: Cascade)
   recurring RecurringTransaction? @relation(fields: [recurringId], references: [id], onDelete: SetNull)
+  loanPayment LoanPayment?
 
-  @@index([userId])
-  @@index([userId, date])
+  @@index([financialSpaceId, date])
+  @@index([financialSpaceId])
   @@index([accountId])
   @@index([categoryId])
   @@map("transaction")
+}
+
+model Loan {
+  id                String   @id @default(cuid())
+  financialSpaceId  String
+  lender            String
+  name              String
+  originalPrincipal Float
+  currentBalance    Float
+  annualRate        Float
+  termMonths        Int
+  monthlyPayment    Float
+  startDate         DateTime
+  nextPaymentDate   DateTime
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
+  payments       LoanPayment[]
+
+  @@index([financialSpaceId])
+  @@map("loan")
+}
+
+model LoanPayment {
+  id            String   @id @default(cuid())
+  loanId        String
+  amount        Float
+  date          DateTime
+  transactionId String   @unique
+  createdAt     DateTime @default(now())
+
+  loan        Loan        @relation(fields: [loanId], references: [id], onDelete: Cascade)
+  transaction Transaction @relation(fields: [transactionId], references: [id], onDelete: Restrict)
+
+  @@index([loanId])
+  @@map("loan_payment")
+}
+
+model Asset {
+  id               String   @id @default(cuid())
+  financialSpaceId String
+  name             String
+  type             String
+  currentValue     Float
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  financialSpace FinancialSpace   @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
+  valuations     AssetValuation[]
+
+  @@index([financialSpaceId])
+  @@map("asset")
+}
+
+model AssetValuation {
+  id        String   @id @default(cuid())
+  assetId   String
+  value     Float
+  date      DateTime
+  notes     String?
+  createdAt DateTime @default(now())
+
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId, date])
+  @@map("asset_valuation")
 }
 
 model Budget {
@@ -156,14 +275,14 @@ model Budget {
   amount     Float
   period     String // WEEKLY | MONTHLY | YEARLY
   startDate  DateTime @default(now())
-  userId     String
+  financialSpaceId String
   categoryId String?
   createdAt  DateTime @default(now())
 
-  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
   category Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 
-  @@index([userId])
+  @@index([financialSpaceId])
   @@map("budget")
 }
 
@@ -173,13 +292,39 @@ model Goal {
   targetAmount  Float
   currentAmount Float     @default(0)
   deadline      DateTime?
-  userId        String
+  expectedAnnualReturn Float @default(0)
+  monthlyContributionTarget Float?
+  financialSpaceId String
   createdAt     DateTime  @default(now())
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([financialSpaceId])
   @@map("goal")
+}
+
+model PlanItem {
+  id             String   @id @default(cuid())
+  financialSpaceId String
+  name           String
+  amount         Float
+  type           String
+  frequency      String
+  categoryId     String?
+  accountId      String?
+  isFixed        Boolean  @default(false)
+  isMicroExpense Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
+  category       Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  account        FinanceAccount? @relation(fields: [accountId], references: [id], onDelete: SetNull)
+
+  @@index([financialSpaceId])
+  @@index([categoryId])
+  @@index([accountId])
+  @@map("plan_item")
 }
 
 model RecurringTransaction {
@@ -192,15 +337,15 @@ model RecurringTransaction {
   active      Boolean  @default(true)
   categoryId  String
   accountId   String
-  userId      String
+  financialSpaceId String
   createdAt   DateTime @default(now())
 
-  user         User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  financialSpace FinancialSpace @relation(fields: [financialSpaceId], references: [id], onDelete: Cascade)
   category     Category        @relation(fields: [categoryId], references: [id])
   account      FinanceAccount  @relation(fields: [accountId], references: [id])
   transactions Transaction[]
 
-  @@index([userId])
+  @@index([financialSpaceId])
   @@index([active, nextDueDate])
   @@map("recurring_transaction")
 }

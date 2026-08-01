@@ -10,7 +10,7 @@ export interface TransactionProps {
   date: Date
   categoryId: string | null
   accountId: string
-  userId: string
+  financialSpaceId: string
   recurringId: string | null
   createdAt: Date
 }
@@ -22,7 +22,7 @@ export interface CreateTransactionData {
   date?: Date
   categoryId?: string | null
   accountId: string
-  userId: string
+  financialSpaceId: string
   recurringId?: string | null
 }
 
@@ -54,7 +54,7 @@ export class Transaction {
       date: data.date ?? new Date(),
       categoryId: data.categoryId ?? null,
       accountId: data.accountId,
-      userId: data.userId,
+      financialSpaceId: data.financialSpaceId,
       recurringId: data.recurringId ?? null,
       createdAt: new Date(),
     })
@@ -86,8 +86,8 @@ export class Transaction {
   get accountId(): string {
     return this.props.accountId
   }
-  get userId(): string {
-    return this.props.userId
+  get financialSpaceId(): string {
+    return this.props.financialSpaceId
   }
   get recurringId(): string | null {
     return this.props.recurringId

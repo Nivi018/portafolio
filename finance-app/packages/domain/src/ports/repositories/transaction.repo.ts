@@ -39,26 +39,41 @@ export interface MonthlyFlowPoint {
   expense: number
 }
 
+/** Actual transactions aggregated by calendar month, type, and category. */
+export interface MonthlyCategoryTotal {
+  month: string // "2026-01"
+  type: TransactionType
+  categoryId: string | null
+  total: number
+}
+
 /**
  * Port: Transaction repository.
  * Implemented by Prisma adapter in the infrastructure layer.
  */
 export interface ITransactionRepository {
   findById(id: string): Promise<Transaction | null>
-  findByUserId(userId: string, filters: TransactionFilters): Promise<PaginatedResult<Transaction>>
+  findByFinancialSpaceId(
+    financialSpaceId: string,
+    filters: TransactionFilters
+  ): Promise<PaginatedResult<Transaction>>
   create(transaction: Transaction): Promise<Transaction>
   update(transaction: Transaction): Promise<Transaction>
   delete(id: string): Promise<void>
 
-  getSummary(userId: string, range: DateRange): Promise<TransactionSummary>
+  getSummary(financialSpaceId: string, range: DateRange): Promise<TransactionSummary>
   getCategoryTotals(
-    userId: string,
+    financialSpaceId: string,
     range: DateRange,
     type: TransactionType
   ): Promise<CategoryTotal[]>
-  getMonthlyFlow(userId: string, months: number): Promise<MonthlyFlowPoint[]>
-  getRecentByUserId(userId: string, limit: number): Promise<Transaction[]>
+  getMonthlyCategoryTotals(
+    financialSpaceId: string,
+    range: DateRange
+  ): Promise<MonthlyCategoryTotal[]>
+  getMonthlyFlow(financialSpaceId: string, months: number): Promise<MonthlyFlowPoint[]>
+  getRecentByFinancialSpaceId(financialSpaceId: string, limit: number): Promise<Transaction[]>
 
   /** Total EXPENSE amount in a range, optionally scoped to one category. */
-  getTotalSpent(userId: string, range: DateRange, categoryId?: string): Promise<number>
+  getTotalSpent(financialSpaceId: string, range: DateRange, categoryId?: string): Promise<number>
 }

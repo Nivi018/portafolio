@@ -10,9 +10,9 @@ export class PrismaGoalRepository implements IGoalRepository {
     return row ? toDomainGoal(row) : null
   }
 
-  async findByUserId(userId: string): Promise<Goal[]> {
+  async findByFinancialSpaceId(financialSpaceId: string): Promise<Goal[]> {
     const rows = await this.prisma.goal.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { createdAt: "desc" },
     })
     return rows.map(toDomainGoal)
@@ -22,11 +22,13 @@ export class PrismaGoalRepository implements IGoalRepository {
     const row = await this.prisma.goal.create({
       data: {
         id: goal.id,
-        userId: goal.userId,
+        financialSpaceId: goal.financialSpaceId,
         name: goal.name,
         targetAmount: goal.targetAmount,
         currentAmount: goal.currentAmount,
         deadline: goal.deadline,
+        expectedAnnualReturn: goal.expectedAnnualReturn,
+        monthlyContributionTarget: goal.monthlyContributionTarget,
         createdAt: goal.createdAt,
       },
     })
@@ -41,6 +43,8 @@ export class PrismaGoalRepository implements IGoalRepository {
         targetAmount: goal.targetAmount,
         currentAmount: goal.currentAmount,
         deadline: goal.deadline,
+        expectedAnnualReturn: goal.expectedAnnualReturn,
+        monthlyContributionTarget: goal.monthlyContributionTarget,
       },
     })
     return toDomainGoal(row)

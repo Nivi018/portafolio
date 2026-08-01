@@ -7,8 +7,8 @@ export interface CreateGoalDeps {
 }
 
 export function makeCreateGoal(deps: CreateGoalDeps) {
-  return async (userId: string, input: CreateGoalInput): Promise<Goal> => {
-    const goal = Goal.create({ ...input, userId })
+  return async (financialSpaceId: string, input: CreateGoalInput): Promise<Goal> => {
+    const goal = Goal.create({ ...input, financialSpaceId })
     return deps.goalRepo.create(goal)
   }
 }

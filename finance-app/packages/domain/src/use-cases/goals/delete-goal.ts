@@ -6,9 +6,9 @@ export interface DeleteGoalDeps {
 }
 
 export function makeDeleteGoal(deps: DeleteGoalDeps) {
-  return async (userId: string, goalId: string): Promise<void> => {
+  return async (financialSpaceId: string, goalId: string): Promise<void> => {
     const goal = await deps.goalRepo.findById(goalId)
-    if (!goal || goal.userId !== userId) {
+    if (!goal || goal.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Goal')
     }
     await deps.goalRepo.delete(goalId)

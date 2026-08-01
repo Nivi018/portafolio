@@ -5,7 +5,7 @@ import type { RecurringTransaction } from '../../entities'
  */
 export interface IRecurringRepository {
   findById(id: string): Promise<RecurringTransaction | null>
-  findByUserId(userId: string): Promise<RecurringTransaction[]>
+  findByFinancialSpaceId(financialSpaceId: string): Promise<RecurringTransaction[]>
   findDue(reference: Date): Promise<RecurringTransaction[]>
   create(recurring: RecurringTransaction): Promise<RecurringTransaction>
   update(recurring: RecurringTransaction): Promise<RecurringTransaction>

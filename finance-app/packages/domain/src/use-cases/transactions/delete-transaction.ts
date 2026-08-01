@@ -10,9 +10,9 @@ export interface DeleteTransactionDeps {
  * Delete a transaction and revert its effect on the account balance.
  */
 export function makeDeleteTransaction(deps: DeleteTransactionDeps) {
-  return async (userId: string, transactionId: string): Promise<void> => {
+  return async (financialSpaceId: string, transactionId: string): Promise<void> => {
     const transaction = await deps.transactionRepo.findById(transactionId)
-    if (!transaction || transaction.userId !== userId) {
+    if (!transaction || transaction.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Transaction')
     }
 

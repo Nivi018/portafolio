@@ -19,14 +19,14 @@ describe('makeTransferFunds', () => {
       type: 'CHECKING',
       balance: fromBalance,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     const to = Account.create({
       name: 'Ahorro',
       type: 'SAVINGS',
       balance: toBalance,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.accountRepo.items.push(from, to)
     return { from, to }
@@ -73,14 +73,14 @@ describe('makeTransferFunds', () => {
       type: 'CREDIT',
       balance: 0,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     const savings = Account.create({
       name: 'Ahorro',
       type: 'SAVINGS',
       balance: 0,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.accountRepo.items.push(credit, savings)
     const transfer = makeTransferFunds(deps)
@@ -96,7 +96,7 @@ describe('makeTransferFunds', () => {
     expect(savings.balance).toBe(1000)
   })
 
-  it('rejects transfer from another user account', async () => {
+  it('rejects transfer from another financial space account', async () => {
     const { from, to } = seedAccounts()
     const transfer = makeTransferFunds(deps)
 

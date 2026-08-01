@@ -15,14 +15,14 @@ export interface BudgetWithStatus {
  * List all budgets with their live status for the current period.
  */
 export function makeGetBudgetStatuses(deps: GetBudgetStatusesDeps) {
-  return async (userId: string): Promise<BudgetWithStatus[]> => {
-    const budgets = await deps.budgetRepo.findByUserId(userId)
+  return async (financialSpaceId: string): Promise<BudgetWithStatus[]> => {
+    const budgets = await deps.budgetRepo.findByFinancialSpaceId(financialSpaceId)
 
     return Promise.all(
       budgets.map(async (budget) => {
         const range = budget.getCurrentRange()
         const spent = await deps.transactionRepo.getTotalSpent(
-          userId,
+          financialSpaceId,
           range,
           budget.categoryId ?? undefined
         )

@@ -6,6 +6,12 @@ import type {
   Goal,
   Category,
   RecurringTransaction,
+  PlanItem,
+  CreditCardProfile,
+  Loan,
+  LoanPayment,
+  Asset,
+  AssetValuation,
 } from '../entities'
 import type { DateRange } from '../value-objects'
 import type {
@@ -15,11 +21,16 @@ import type {
   IGoalRepository,
   ICategoryRepository,
   IRecurringRepository,
+  IPlanItemRepository,
+  ICreditCardProfileRepository,
+  ILoanRepository,
+  IAssetRepository,
   TransactionFilters,
   PaginatedResult,
   TransactionSummary,
   CategoryTotal,
   MonthlyFlowPoint,
+  MonthlyCategoryTotal,
 } from '../ports'
 
 /**
@@ -35,11 +46,11 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
     return this.items.find((t) => t.id === id) ?? null
   }
 
-  async findByUserId(
-    userId: string,
+  async findByFinancialSpaceId(
+    financialSpaceId: string,
     filters: TransactionFilters
   ): Promise<PaginatedResult<Transaction>> {
-    let filtered = this.items.filter((t) => t.userId === userId)
+    let filtered = this.items.filter((t) => t.financialSpaceId === financialSpaceId)
     if (filters.type) filtered = filtered.filter((t) => t.type === filters.type)
     if (filters.categoryId) filtered = filtered.filter((t) => t.categoryId === filters.categoryId)
     if (filters.accountId) filtered = filtered.filter((t) => t.accountId === filters.accountId)
@@ -70,8 +81,10 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
     this.items = this.items.filter((t) => t.id !== id)
   }
 
-  async getSummary(userId: string, range: DateRange): Promise<TransactionSummary> {
-    const txs = this.items.filter((t) => t.userId === userId && range.contains(t.date))
+  async getSummary(financialSpaceId: string, range: DateRange): Promise<TransactionSummary> {
+    const txs = this.items.filter(
+      (t) => t.financialSpaceId === financialSpaceId && range.contains(t.date)
+    )
     const totalIncome = txs.filter((t) => t.isIncome()).reduce((s, t) => s + t.amount, 0)
     const totalExpense = txs.filter((t) => t.isExpense()).reduce((s, t) => s + t.amount, 0)
     return {
@@ -83,29 +96,60 @@ export class InMemoryTransactionRepository implements ITransactionRepository {
   }
 
   async getCategoryTotals(
-    _userId: string,
+    _financialSpaceId: string,
     _range: DateRange,
     _type: TransactionType
   ): Promise<CategoryTotal[]> {
     return []
   }
 
-  async getMonthlyFlow(_userId: string, _months: number): Promise<MonthlyFlowPoint[]> {
+  async getMonthlyFlow(_financialSpaceId: string, _months: number): Promise<MonthlyFlowPoint[]> {
     return []
   }
 
-  async getRecentByUserId(userId: string, limit: number) {
+  async getMonthlyCategoryTotals(
+    financialSpaceId: string,
+    range: DateRange
+  ): Promise<MonthlyCategoryTotal[]> {
+    const totals = new Map<string, MonthlyCategoryTotal>()
+
+    for (const transaction of this.items) {
+      if (
+        transaction.financialSpaceId !== financialSpaceId ||
+        !range.contains(transaction.date)
+      ) {
+        continue
+      }
+
+      const month = `${transaction.date.getFullYear()}-${String(transaction.date.getMonth() + 1).padStart(2, '0')}`
+      const key = `${month}:${transaction.type}:${transaction.categoryId ?? ''}`
+      const current = totals.get(key)
+      if (current) current.total += transaction.amount
+      else {
+        totals.set(key, {
+          month,
+          type: transaction.type,
+          categoryId: transaction.categoryId,
+          total: transaction.amount,
+        })
+      }
+    }
+
+    return [...totals.values()]
+  }
+
+  async getRecentByFinancialSpaceId(financialSpaceId: string, limit: number) {
     return this.items
-      .filter((t) => t.userId === userId)
+      .filter((t) => t.financialSpaceId === financialSpaceId)
       .sort((a, b) => b.date.getTime() - a.date.getTime())
       .slice(0, limit)
   }
 
-  async getTotalSpent(userId: string, range: DateRange, categoryId?: string) {
+  async getTotalSpent(financialSpaceId: string, range: DateRange, categoryId?: string) {
     return this.items
       .filter(
         (t) =>
-          t.userId === userId &&
+          t.financialSpaceId === financialSpaceId &&
           t.isExpense() &&
           range.contains(t.date) &&
           (!categoryId || t.categoryId === categoryId)
@@ -121,8 +165,8 @@ export class InMemoryAccountRepository implements IAccountRepository {
     return this.items.find((a) => a.id === id) ?? null
   }
 
-  async findByUserId(userId: string) {
-    return this.items.filter((a) => a.userId === userId)
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((a) => a.financialSpaceId === financialSpaceId)
   }
 
   async create(account: Account) {
@@ -144,9 +188,86 @@ export class InMemoryAccountRepository implements IAccountRepository {
     return false
   }
 
-  async getTotalBalance(userId: string) {
-    return this.items.filter((a) => a.userId === userId).reduce((s, a) => s + a.balance, 0)
+  async getTotalBalance(financialSpaceId: string) {
+    return this.items
+      .filter((a) => a.financialSpaceId === financialSpaceId)
+      .reduce((s, a) => s + a.balance, 0)
   }
+}
+
+export class InMemoryCreditCardProfileRepository implements ICreditCardProfileRepository {
+  items: CreditCardProfile[] = []
+
+  constructor(private readonly accountRepo: IAccountRepository) {}
+
+  async findById(id: string) {
+    return this.items.find((profile) => profile.id === id) ?? null
+  }
+
+  async findByAccountId(accountId: string) {
+    return this.items.find((profile) => profile.accountId === accountId) ?? null
+  }
+
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    const accounts = await this.accountRepo.findByFinancialSpaceId(financialSpaceId)
+    const accountIds = new Set(accounts.map((account) => account.id))
+    return this.items.filter((profile) => accountIds.has(profile.accountId))
+  }
+
+  async create(profile: CreditCardProfile) {
+    this.items.push(profile)
+    return profile
+  }
+
+  async update(profile: CreditCardProfile) {
+    const index = this.items.findIndex((item) => item.id === profile.id)
+    if (index >= 0) this.items[index] = profile
+    return profile
+  }
+}
+
+export class InMemoryLoanRepository implements ILoanRepository {
+  items: Loan[] = []
+  payments: LoanPayment[] = []
+
+  async findById(id: string) {
+    return this.items.find((loan) => loan.id === id) ?? null
+  }
+
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((loan) => loan.financialSpaceId === financialSpaceId)
+  }
+
+  async findPaymentsByLoanId(loanId: string) {
+    return this.payments.filter((payment) => payment.loanId === loanId)
+  }
+
+  async create(loan: Loan) {
+    this.items.push(loan)
+    return loan
+  }
+
+  async update(loan: Loan) {
+    const index = this.items.findIndex((item) => item.id === loan.id)
+    if (index >= 0) this.items[index] = loan
+    return loan
+  }
+
+  async createPayment(payment: LoanPayment) {
+    this.payments.push(payment)
+    return payment
+  }
+}
+
+export class InMemoryAssetRepository implements IAssetRepository {
+  items: Asset[] = []
+  valuations: AssetValuation[] = []
+  async findById(id: string) { return this.items.find((asset) => asset.id === id) ?? null }
+  async findByFinancialSpaceId(financialSpaceId: string) { return this.items.filter((asset) => asset.financialSpaceId === financialSpaceId) }
+  async findValuationsByAssetId(assetId: string) { return this.valuations.filter((valuation) => valuation.assetId === assetId) }
+  async create(asset: Asset) { this.items.push(asset); return asset }
+  async update(asset: Asset) { const index = this.items.findIndex((item) => item.id === asset.id); if (index >= 0) this.items[index] = asset; return asset }
+  async createValuation(valuation: AssetValuation) { this.valuations.push(valuation); return valuation }
 }
 
 export class InMemoryCategoryRepository implements ICategoryRepository {
@@ -156,17 +277,19 @@ export class InMemoryCategoryRepository implements ICategoryRepository {
     return this.items.find((c) => c.id === id) ?? null
   }
 
-  async findByUserId(userId: string) {
-    return this.items.filter((c) => c.userId === userId)
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((c) => c.financialSpaceId === financialSpaceId)
   }
 
-  async findByUserIdAndType(userId: string, type: CategoryType) {
-    return this.items.filter((c) => c.userId === userId && c.type === type)
+  async findByFinancialSpaceIdAndType(financialSpaceId: string, type: CategoryType) {
+    return this.items.filter((c) => c.financialSpaceId === financialSpaceId && c.type === type)
   }
 
-  async findByName(userId: string, name: string) {
+  async findByName(financialSpaceId: string, name: string) {
     return (
-      this.items.find((c) => c.userId === userId && c.name.toLowerCase() === name.toLowerCase()) ??
+       this.items.find(
+         (c) => c.financialSpaceId === financialSpaceId && c.name.toLowerCase() === name.toLowerCase()
+       ) ??
       null
     )
   }
@@ -203,8 +326,8 @@ export class InMemoryBudgetRepository implements IBudgetRepository {
     return this.items.find((b) => b.id === id) ?? null
   }
 
-  async findByUserId(userId: string) {
-    return this.items.filter((b) => b.userId === userId)
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((b) => b.financialSpaceId === financialSpaceId)
   }
 
   async create(budget: Budget) {
@@ -230,8 +353,8 @@ export class InMemoryGoalRepository implements IGoalRepository {
     return this.items.find((g) => g.id === id) ?? null
   }
 
-  async findByUserId(userId: string) {
-    return this.items.filter((g) => g.userId === userId)
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((g) => g.financialSpaceId === financialSpaceId)
   }
 
   async create(goal: Goal) {
@@ -257,8 +380,8 @@ export class InMemoryRecurringRepository implements IRecurringRepository {
     return this.items.find((r) => r.id === id) ?? null
   }
 
-  async findByUserId(userId: string) {
-    return this.items.filter((r) => r.userId === userId)
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((r) => r.financialSpaceId === financialSpaceId)
   }
 
   async findDue(reference: Date) {
@@ -281,14 +404,45 @@ export class InMemoryRecurringRepository implements IRecurringRepository {
   }
 }
 
+export class InMemoryPlanItemRepository implements IPlanItemRepository {
+  items: PlanItem[] = []
+
+  async findById(id: string) {
+    return this.items.find((item) => item.id === id) ?? null
+  }
+
+  async findByFinancialSpaceId(financialSpaceId: string) {
+    return this.items.filter((item) => item.financialSpaceId === financialSpaceId)
+  }
+
+  async create(planItem: PlanItem) {
+    this.items.push(planItem)
+    return planItem
+  }
+
+  async update(planItem: PlanItem) {
+    const index = this.items.findIndex((item) => item.id === planItem.id)
+    if (index >= 0) this.items[index] = planItem
+    return planItem
+  }
+
+  async delete(id: string) {
+    this.items = this.items.filter((item) => item.id !== id)
+  }
+}
+
 /** Convenience factory: a full set of in-memory repos for tests. */
 export function makeInMemoryDeps() {
+  const accountRepo = new InMemoryAccountRepository()
   return {
     transactionRepo: new InMemoryTransactionRepository(),
-    accountRepo: new InMemoryAccountRepository(),
+    accountRepo,
+    creditCardProfileRepo: new InMemoryCreditCardProfileRepository(accountRepo),
     categoryRepo: new InMemoryCategoryRepository(),
     budgetRepo: new InMemoryBudgetRepository(),
     goalRepo: new InMemoryGoalRepository(),
     recurringRepo: new InMemoryRecurringRepository(),
+    planItemRepo: new InMemoryPlanItemRepository(),
+    loanRepo: new InMemoryLoanRepository(),
   }
 }

@@ -4,7 +4,7 @@ import { Money } from '../value-objects'
 
 export interface RecurringTransactionProps {
   id: string
-  userId: string
+  financialSpaceId: string
   amount: number
   description: string | null
   type: TransactionType
@@ -24,7 +24,7 @@ export interface CreateRecurringData {
   nextDueDate: Date
   categoryId: string
   accountId: string
-  userId: string
+  financialSpaceId: string
 }
 
 /**
@@ -44,7 +44,7 @@ export class RecurringTransaction {
     }
     return new RecurringTransaction({
       id: crypto.randomUUID(),
-      userId: data.userId,
+      financialSpaceId: data.financialSpaceId,
       amount: money.amount,
       description: data.description ?? null,
       type: data.type,
@@ -64,8 +64,8 @@ export class RecurringTransaction {
   get id(): string {
     return this.props.id
   }
-  get userId(): string {
-    return this.props.userId
+  get financialSpaceId(): string {
+    return this.props.financialSpaceId
   }
   get amount(): number {
     return this.props.amount

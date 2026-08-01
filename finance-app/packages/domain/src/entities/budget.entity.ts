@@ -4,7 +4,7 @@ import { Money, DateRange, getBudgetPeriodRange } from '../value-objects'
 
 export interface BudgetProps {
   id: string
-  userId: string
+  financialSpaceId: string
   amount: number
   period: BudgetPeriod
   categoryId: string | null
@@ -17,7 +17,7 @@ export interface CreateBudgetData {
   period: BudgetPeriod
   categoryId?: string | null
   startDate?: Date
-  userId: string
+  financialSpaceId: string
 }
 
 export interface BudgetStatus {
@@ -41,7 +41,7 @@ export class Budget {
     }
     return new Budget({
       id: crypto.randomUUID(),
-      userId: data.userId,
+      financialSpaceId: data.financialSpaceId,
       amount: money.amount,
       period: data.period,
       categoryId: data.categoryId ?? null,
@@ -57,8 +57,8 @@ export class Budget {
   get id(): string {
     return this.props.id
   }
-  get userId(): string {
-    return this.props.userId
+  get financialSpaceId(): string {
+    return this.props.financialSpaceId
   }
   get amount(): number {
     return this.props.amount

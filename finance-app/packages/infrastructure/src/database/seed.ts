@@ -8,6 +8,8 @@ const {
   PrismaAccountRepository,
   PrismaBudgetRepository,
   PrismaCategoryRepository,
+  PrismaFinancialSpaceMemberRepository,
+  PrismaFinancialSpaceRepository,
   PrismaGoalRepository,
   PrismaTransactionRepository,
 } = await import('./repositories')
@@ -17,6 +19,8 @@ const {
   makeCreateDefaultCategories,
   makeCreateGoal,
   makeCreateTransaction,
+  FinancialSpace,
+  FinancialSpaceMember,
 } = await import('@finance/domain')
 
 const DEMO_EMAIL = 'demo@financeapp.dev'
@@ -47,26 +51,51 @@ async function main() {
   const transactionRepo = new PrismaTransactionRepository(prisma)
   const budgetRepo = new PrismaBudgetRepository(prisma)
   const goalRepo = new PrismaGoalRepository(prisma)
+  const financialSpaceRepo = new PrismaFinancialSpaceRepository(prisma)
+  const financialSpaceMemberRepo = new PrismaFinancialSpaceMemberRepository(prisma)
 
-  await makeCreateDefaultCategories({ categoryRepo })(user.id)
+  let financialSpace = (await financialSpaceRepo.findByUserId(user.id)).find(
+    (space) => space.name === 'Personal',
+  )
+  if (!financialSpace) {
+    financialSpace = await financialSpaceRepo.create(
+      FinancialSpace.create({ name: 'Personal', type: 'PERSONAL' }),
+    )
+  }
 
-  const existingAccounts = await accountRepo.findByUserId(user.id)
+  const membership = await financialSpaceMemberRepo.findByFinancialSpaceIdAndUserId(
+    financialSpace.id,
+    user.id,
+  )
+  if (!membership) {
+    await financialSpaceMemberRepo.create(
+      FinancialSpaceMember.create({
+        financialSpaceId: financialSpace.id,
+        userId: user.id,
+        role: 'OWNER',
+      }),
+    )
+  }
+
+  await makeCreateDefaultCategories({ categoryRepo })(financialSpace.id)
+
+  const existingAccounts = await accountRepo.findByFinancialSpaceId(financialSpace.id)
   if (existingAccounts.length === 0) {
     const createAccount = makeCreateAccount({ accountRepo })
-    const checking = await createAccount(user.id, {
+    const checking = await createAccount(financialSpace.id, {
       name: 'Cuenta principal',
       type: 'CHECKING',
       balance: 12500,
       currency: 'MXN',
     })
-    await createAccount(user.id, {
+    await createAccount(financialSpace.id, {
       name: 'Ahorro',
       type: 'SAVINGS',
       balance: 8500,
       currency: 'MXN',
     })
 
-    const categories = await categoryRepo.findByUserId(user.id)
+    const categories = await categoryRepo.findByFinancialSpaceId(financialSpace.id)
     const salary = categories.find((category) => category.name === 'Salario')
     const food = categories.find((category) => category.name === 'Alimentación')
     const transport = categories.find((category) => category.name === 'Transporte')
@@ -78,7 +107,7 @@ async function main() {
         categoryRepo,
       })
 
-      await createTransaction(user.id, {
+      await createTransaction(financialSpace.id, {
         amount: 18000,
         type: 'INCOME',
         categoryId: salary.id,
@@ -86,7 +115,7 @@ async function main() {
         description: 'Ingreso mensual',
         date: new Date(),
       })
-      await createTransaction(user.id, {
+      await createTransaction(financialSpace.id, {
         amount: 1250,
         type: 'EXPENSE',
         categoryId: food.id,
@@ -94,7 +123,7 @@ async function main() {
         description: 'Supermercado',
         date: new Date(),
       })
-      await createTransaction(user.id, {
+      await createTransaction(financialSpace.id, {
         amount: 480,
         type: 'EXPENSE',
         categoryId: transport.id,
@@ -103,7 +132,7 @@ async function main() {
         date: new Date(),
       })
 
-      await makeCreateBudget({ budgetRepo, categoryRepo })(user.id, {
+      await makeCreateBudget({ budgetRepo, categoryRepo })(financialSpace.id, {
         amount: 4000,
         period: 'MONTHLY',
         categoryId: food.id,
@@ -111,10 +140,11 @@ async function main() {
       })
     }
 
-    await makeCreateGoal({ goalRepo })(user.id, {
+    await makeCreateGoal({ goalRepo })(financialSpace.id, {
       name: 'Fondo de emergencia',
       targetAmount: 50000,
       deadline: new Date(new Date().getFullYear() + 1, 0, 1),
+      expectedAnnualReturn: 0,
     })
   }
 

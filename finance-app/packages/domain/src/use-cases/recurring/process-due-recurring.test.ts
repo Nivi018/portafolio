@@ -18,14 +18,14 @@ describe('makeProcessDueRecurring', () => {
       type: 'CHECKING',
       balance: 5000,
       currency: 'MXN',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     const category = Category.create({
       name: 'Servicios',
       icon: 'zap',
       color: '#eab308',
       type: 'EXPENSE',
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.accountRepo.items.push(account)
     deps.categoryRepo.items.push(category)
@@ -45,7 +45,7 @@ describe('makeProcessDueRecurring', () => {
       nextDueDate: yesterday,
       categoryId: category.id,
       accountId: account.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.recurringRepo.items.push(recurring)
 
@@ -72,7 +72,7 @@ describe('makeProcessDueRecurring', () => {
       nextDueDate: twentyDaysAgo,
       categoryId: category.id,
       accountId: account.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     deps.recurringRepo.items.push(recurring)
 
@@ -96,7 +96,7 @@ describe('makeProcessDueRecurring', () => {
       nextDueDate: yesterday,
       categoryId: category.id,
       accountId: account.id,
-      userId: USER_ID,
+      financialSpaceId: USER_ID,
     })
     recurring.deactivate()
     deps.recurringRepo.items.push(recurring)

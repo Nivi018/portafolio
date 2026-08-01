@@ -26,12 +26,12 @@ export interface ImportCsvResult {
  */
 export function makeImportCsv(deps: ImportCsvDeps) {
   return async (
-    userId: string,
+    financialSpaceId: string,
     accountId: string,
     rows: CsvTransactionRow[]
   ): Promise<ImportCsvResult> => {
     const account = await deps.accountRepo.findById(accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 
@@ -43,10 +43,10 @@ export function makeImportCsv(deps: ImportCsvDeps) {
       const cached = categoryCache.get(key)
       if (cached) return cached
 
-      let category = await deps.categoryRepo.findByName(userId, name)
+      let category = await deps.categoryRepo.findByName(financialSpaceId, name)
       if (!category) {
         category = await deps.categoryRepo.create(
-          Category.create({ name, icon: 'tag', color: '#6b7280', type, userId })
+          Category.create({ name, icon: 'tag', color: '#6b7280', type, financialSpaceId })
         )
       }
       categoryCache.set(key, category)
@@ -63,7 +63,7 @@ export function makeImportCsv(deps: ImportCsvDeps) {
           date: row.date,
           categoryId: category.id,
           accountId,
-          userId,
+          financialSpaceId,
         })
         account.applyTransaction(transaction)
         await deps.transactionRepo.create(transaction)

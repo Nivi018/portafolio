@@ -6,9 +6,9 @@ export interface DeleteCategoryDeps {
 }
 
 export function makeDeleteCategory(deps: DeleteCategoryDeps) {
-  return async (userId: string, categoryId: string): Promise<void> => {
+  return async (financialSpaceId: string, categoryId: string): Promise<void> => {
     const category = await deps.categoryRepo.findById(categoryId)
-    if (!category || category.userId !== userId) {
+    if (!category || category.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Category')
     }
 

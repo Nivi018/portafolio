@@ -1,0 +1,2 @@
+ALTER TABLE "goal" ADD COLUMN "expectedAnnualReturn" DOUBLE PRECISION NOT NULL DEFAULT 0;
+ALTER TABLE "goal" ADD COLUMN "monthlyContributionTarget" DOUBLE PRECISION;

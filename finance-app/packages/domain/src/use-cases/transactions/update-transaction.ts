@@ -19,18 +19,18 @@ export interface UpdateTransactionDeps {
  */
 export function makeUpdateTransaction(deps: UpdateTransactionDeps) {
   return async (
-    userId: string,
+    financialSpaceId: string,
     transactionId: string,
     input: UpdateTransactionInput
   ): Promise<Transaction> => {
     const existing = await deps.transactionRepo.findById(transactionId)
-    if (!existing || existing.userId !== userId) {
+    if (!existing || existing.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Transaction')
     }
 
     const newAccountId = input.accountId ?? existing.accountId
     const account = await deps.accountRepo.findById(newAccountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 
@@ -38,7 +38,7 @@ export function makeUpdateTransaction(deps: UpdateTransactionDeps) {
     const newCategoryId = input.categoryId ?? existing.categoryId
     if (newCategoryId) {
       const category = await deps.categoryRepo.findById(newCategoryId)
-      if (!category || category.userId !== userId) {
+      if (!category || category.financialSpaceId !== financialSpaceId) {
         throw new NotFoundException('Category')
       }
       if (newType !== 'TRANSFER' && category.type !== newType) {
@@ -58,7 +58,7 @@ export function makeUpdateTransaction(deps: UpdateTransactionDeps) {
       date: input.date ?? existing.date,
       categoryId: newCategoryId,
       accountId: newAccountId,
-      userId: existing.userId,
+      financialSpaceId: existing.financialSpaceId,
       recurringId: existing.recurringId,
       createdAt: existing.createdAt,
     })

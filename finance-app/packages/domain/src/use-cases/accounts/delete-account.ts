@@ -10,9 +10,9 @@ export interface DeleteAccountDeps {
  * Prevents accidental loss of financial history.
  */
 export function makeDeleteAccount(deps: DeleteAccountDeps) {
-  return async (userId: string, accountId: string): Promise<void> => {
+  return async (financialSpaceId: string, accountId: string): Promise<void> => {
     const account = await deps.accountRepo.findById(accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 

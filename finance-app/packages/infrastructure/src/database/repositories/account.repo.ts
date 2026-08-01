@@ -10,9 +10,9 @@ export class PrismaAccountRepository implements IAccountRepository {
     return row ? toDomainAccount(row) : null
   }
 
-  async findByUserId(userId: string): Promise<Account[]> {
+  async findByFinancialSpaceId(financialSpaceId: string): Promise<Account[]> {
     const rows = await this.prisma.financeAccount.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { createdAt: "asc" },
     })
     return rows.map(toDomainAccount)
@@ -22,7 +22,7 @@ export class PrismaAccountRepository implements IAccountRepository {
     const row = await this.prisma.financeAccount.create({
       data: {
         id: account.id,
-        userId: account.userId,
+        financialSpaceId: account.financialSpaceId,
         name: account.name,
         type: account.type,
         balance: account.balance,
@@ -57,9 +57,9 @@ export class PrismaAccountRepository implements IAccountRepository {
     return count > 0
   }
 
-  async getTotalBalance(userId: string): Promise<number> {
+  async getTotalBalance(financialSpaceId: string): Promise<number> {
     const agg = await this.prisma.financeAccount.aggregate({
-      where: { userId },
+      where: { financialSpaceId },
       _sum: { balance: true },
     })
     return agg._sum.balance ?? 0

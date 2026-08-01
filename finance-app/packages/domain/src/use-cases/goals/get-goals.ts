@@ -6,7 +6,7 @@ export interface GetGoalsDeps {
 }
 
 export function makeGetGoals(deps: GetGoalsDeps) {
-  return async (userId: string): Promise<Goal[]> => {
-    return deps.goalRepo.findByUserId(userId)
+  return async (financialSpaceId: string): Promise<Goal[]> => {
+    return deps.goalRepo.findByFinancialSpaceId(financialSpaceId)
   }
 }

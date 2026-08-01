@@ -10,18 +10,21 @@ export interface CreateRecurringDeps {
 }
 
 export function makeCreateRecurring(deps: CreateRecurringDeps) {
-  return async (userId: string, input: CreateRecurringInput): Promise<RecurringTransaction> => {
+  return async (
+    financialSpaceId: string,
+    input: CreateRecurringInput
+  ): Promise<RecurringTransaction> => {
     const account = await deps.accountRepo.findById(input.accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 
     const category = await deps.categoryRepo.findById(input.categoryId)
-    if (!category || category.userId !== userId) {
+    if (!category || category.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Category')
     }
 
-    const recurring = RecurringTransaction.create({ ...input, userId })
+    const recurring = RecurringTransaction.create({ ...input, financialSpaceId })
     return deps.recurringRepo.create(recurring)
   }
 }

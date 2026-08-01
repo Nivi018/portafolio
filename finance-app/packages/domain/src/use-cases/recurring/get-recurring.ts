@@ -6,7 +6,7 @@ export interface GetRecurringDeps {
 }
 
 export function makeGetRecurring(deps: GetRecurringDeps) {
-  return async (userId: string): Promise<RecurringTransaction[]> => {
-    return deps.recurringRepo.findByUserId(userId)
+  return async (financialSpaceId: string): Promise<RecurringTransaction[]> => {
+    return deps.recurringRepo.findByFinancialSpaceId(financialSpaceId)
   }
 }

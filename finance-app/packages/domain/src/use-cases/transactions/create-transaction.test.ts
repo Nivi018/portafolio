@@ -14,7 +14,7 @@ function seedAccount(deps: ReturnType<typeof makeInMemoryDeps>, balance = 1000) 
     type: 'CHECKING',
     balance,
     currency: 'MXN',
-    userId: USER_ID,
+    financialSpaceId: USER_ID,
   })
   deps.accountRepo.items.push(account)
   return account
@@ -26,7 +26,7 @@ function seedCategory(deps: ReturnType<typeof makeInMemoryDeps>, type: 'INCOME' 
     icon: 'tag',
     color: '#22c55e',
     type,
-    userId: USER_ID,
+    financialSpaceId: USER_ID,
   })
   deps.categoryRepo.items.push(category)
   return category
@@ -73,7 +73,7 @@ describe('makeCreateTransaction', () => {
     expect(account.balance).toBe(1500)
   })
 
-  it('rejects when the account belongs to another user', async () => {
+  it('rejects when the account belongs to another financial space', async () => {
     const account = seedAccount(deps)
     const category = seedCategory(deps, 'EXPENSE')
     const createTransaction = makeCreateTransaction(deps)

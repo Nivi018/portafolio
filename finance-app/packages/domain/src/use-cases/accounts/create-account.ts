@@ -7,8 +7,8 @@ export interface CreateAccountDeps {
 }
 
 export function makeCreateAccount(deps: CreateAccountDeps) {
-  return async (userId: string, input: CreateAccountInput): Promise<Account> => {
-    const account = Account.create({ ...input, userId })
+  return async (financialSpaceId: string, input: CreateAccountInput): Promise<Account> => {
+    const account = Account.create({ ...input, financialSpaceId })
     return deps.accountRepo.create(account)
   }
 }

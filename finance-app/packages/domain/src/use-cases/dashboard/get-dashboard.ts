@@ -41,19 +41,19 @@ function changePercent(current: number, previous: number): number | null {
  * monthly flow, recent activity, and budget statuses.
  */
 export function makeGetDashboard(deps: GetDashboardDeps) {
-  return async (userId: string): Promise<DashboardData> => {
+  return async (financialSpaceId: string): Promise<DashboardData> => {
     const currentRange = DateRange.currentMonth()
     const previousRange = DateRange.previousMonth()
 
     const [totalBalance, summary, previousSummary, categoryTotals, monthlyFlow, recent, budgets] =
       await Promise.all([
-        deps.accountRepo.getTotalBalance(userId),
-        deps.transactionRepo.getSummary(userId, currentRange),
-        deps.transactionRepo.getSummary(userId, previousRange),
-        deps.transactionRepo.getCategoryTotals(userId, currentRange, 'EXPENSE'),
-        deps.transactionRepo.getMonthlyFlow(userId, 6),
-        deps.transactionRepo.getRecentByUserId(userId, 5),
-        deps.budgetRepo.findByUserId(userId),
+        deps.accountRepo.getTotalBalance(financialSpaceId),
+        deps.transactionRepo.getSummary(financialSpaceId, currentRange),
+        deps.transactionRepo.getSummary(financialSpaceId, previousRange),
+        deps.transactionRepo.getCategoryTotals(financialSpaceId, currentRange, 'EXPENSE'),
+        deps.transactionRepo.getMonthlyFlow(financialSpaceId, 6),
+        deps.transactionRepo.getRecentByFinancialSpaceId(financialSpaceId, 5),
+        deps.budgetRepo.findByFinancialSpaceId(financialSpaceId),
       ])
 
     const totalExpense = categoryTotals.reduce((acc, c) => acc + c.total, 0)
@@ -67,7 +67,7 @@ export function makeGetDashboard(deps: GetDashboardDeps) {
       budgets.map(async (budget) => {
         const range = budget.getCurrentRange()
         const spent = await deps.transactionRepo.getTotalSpent(
-          userId,
+          financialSpaceId,
           range,
           budget.categoryId ?? undefined
         )

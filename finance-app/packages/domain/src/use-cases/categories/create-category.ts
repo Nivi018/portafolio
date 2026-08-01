@@ -8,13 +8,13 @@ export interface CreateCategoryDeps {
 }
 
 export function makeCreateCategory(deps: CreateCategoryDeps) {
-  return async (userId: string, input: CreateCategoryInput): Promise<Category> => {
-    const existing = await deps.categoryRepo.findByName(userId, input.name)
+  return async (financialSpaceId: string, input: CreateCategoryInput): Promise<Category> => {
+    const existing = await deps.categoryRepo.findByName(financialSpaceId, input.name)
     if (existing) {
       throw new ValidationException(`Ya existe una categoría llamada "${input.name}"`)
     }
 
-    const category = Category.create({ ...input, userId })
+    const category = Category.create({ ...input, financialSpaceId })
     return deps.categoryRepo.create(category)
   }
 }

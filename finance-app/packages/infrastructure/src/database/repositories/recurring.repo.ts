@@ -10,9 +10,9 @@ export class PrismaRecurringRepository implements IRecurringRepository {
     return row ? toDomainRecurring(row) : null
   }
 
-  async findByUserId(userId: string): Promise<RecurringTransaction[]> {
+  async findByFinancialSpaceId(financialSpaceId: string): Promise<RecurringTransaction[]> {
     const rows = await this.prisma.recurringTransaction.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { nextDueDate: "asc" },
     })
     return rows.map(toDomainRecurring)
@@ -29,7 +29,7 @@ export class PrismaRecurringRepository implements IRecurringRepository {
     const row = await this.prisma.recurringTransaction.create({
       data: {
         id: recurring.id,
-        userId: recurring.userId,
+        financialSpaceId: recurring.financialSpaceId,
         amount: recurring.amount,
         description: recurring.description,
         type: recurring.type,

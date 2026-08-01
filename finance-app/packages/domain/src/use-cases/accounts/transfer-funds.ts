@@ -14,19 +14,19 @@ export interface TransferResult {
 }
 
 /**
- * Transfer funds between two accounts of the same user.
+ * Transfer funds between two accounts in the same financial space.
  * Creates two linked TRANSFER transactions (audit trail) and updates both balances.
  * Non-credit source accounts must have sufficient funds.
  */
 export function makeTransferFunds(deps: TransferFundsDeps) {
-  return async (userId: string, input: TransferFundsInput): Promise<TransferResult> => {
+  return async (financialSpaceId: string, input: TransferFundsInput): Promise<TransferResult> => {
     const [from, to] = await Promise.all([
       deps.accountRepo.findById(input.fromAccountId),
       deps.accountRepo.findById(input.toAccountId),
     ])
 
-    if (!from || from.userId !== userId) throw new NotFoundException('Account (origen)')
-    if (!to || to.userId !== userId) throw new NotFoundException('Account (destino)')
+    if (!from || from.financialSpaceId !== financialSpaceId) throw new NotFoundException('Account (origen)')
+    if (!to || to.financialSpaceId !== financialSpaceId) throw new NotFoundException('Account (destino)')
     if (!from.canWithdraw(input.amount)) throw new InsufficientFundsException(from.name)
 
     const label = input.description ?? `Transferencia ${from.name} → ${to.name}`
@@ -37,7 +37,7 @@ export function makeTransferFunds(deps: TransferFundsDeps) {
       type: 'TRANSFER',
       date: input.date,
       accountId: from.id,
-      userId,
+      financialSpaceId,
     })
     const incoming = Transaction.create({
       amount: input.amount,
@@ -45,7 +45,7 @@ export function makeTransferFunds(deps: TransferFundsDeps) {
       type: 'TRANSFER',
       date: input.date,
       accountId: to.id,
-      userId,
+      financialSpaceId,
     })
 
     from.withdraw(input.amount)

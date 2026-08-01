@@ -43,7 +43,7 @@ export function makeProcessDueRecurring(deps: ProcessDueRecurringDeps) {
             date: recurring.nextDueDate,
             categoryId: recurring.categoryId,
             accountId: recurring.accountId,
-            userId: recurring.userId,
+            financialSpaceId: recurring.financialSpaceId,
             recurringId: recurring.id,
           })
 

@@ -6,9 +6,9 @@ export interface DeleteBudgetDeps {
 }
 
 export function makeDeleteBudget(deps: DeleteBudgetDeps) {
-  return async (userId: string, budgetId: string): Promise<void> => {
+  return async (financialSpaceId: string, budgetId: string): Promise<void> => {
     const budget = await deps.budgetRepo.findById(budgetId)
-    if (!budget || budget.userId !== userId) {
+    if (!budget || budget.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Budget')
     }
     await deps.budgetRepo.delete(budgetId)

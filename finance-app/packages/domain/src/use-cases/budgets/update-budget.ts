@@ -8,9 +8,13 @@ export interface UpdateBudgetDeps {
 }
 
 export function makeUpdateBudget(deps: UpdateBudgetDeps) {
-  return async (userId: string, budgetId: string, input: UpdateBudgetInput): Promise<Budget> => {
+  return async (
+    financialSpaceId: string,
+    budgetId: string,
+    input: UpdateBudgetInput
+  ): Promise<Budget> => {
     const budget = await deps.budgetRepo.findById(budgetId)
-    if (!budget || budget.userId !== userId) {
+    if (!budget || budget.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Budget')
     }
 

@@ -3,7 +3,7 @@ import { ValidationException } from '../exceptions'
 
 export interface CategoryProps {
   id: string
-  userId: string
+  financialSpaceId: string
   name: string
   icon: string
   color: string
@@ -16,11 +16,11 @@ export interface CreateCategoryData {
   icon: string
   color: string
   type: CategoryType
-  userId: string
+  financialSpaceId: string
 }
 
 /**
- * Category entity. Each user has their own set of categories.
+ * Category entity. Each financial space has its own set of categories.
  */
 export class Category {
   private constructor(private props: CategoryProps) {}
@@ -34,7 +34,7 @@ export class Category {
     }
     return new Category({
       id: crypto.randomUUID(),
-      userId: data.userId,
+      financialSpaceId: data.financialSpaceId,
       name: data.name.trim(),
       icon: data.icon,
       color: data.color.toLowerCase(),
@@ -50,8 +50,8 @@ export class Category {
   get id(): string {
     return this.props.id
   }
-  get userId(): string {
-    return this.props.userId
+  get financialSpaceId(): string {
+    return this.props.financialSpaceId
   }
   get name(): string {
     return this.props.name

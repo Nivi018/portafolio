@@ -5,7 +5,7 @@ import type { Transaction } from './transaction.entity'
 
 export interface AccountProps {
   id: string
-  userId: string
+  financialSpaceId: string
   name: string
   type: AccountType
   balance: number
@@ -19,7 +19,7 @@ export interface CreateAccountData {
   type: AccountType
   balance?: number
   currency: Currency
-  userId: string
+  financialSpaceId: string
 }
 
 /**
@@ -40,7 +40,7 @@ export class Account {
     const now = new Date()
     return new Account({
       id: crypto.randomUUID(),
-      userId: data.userId,
+      financialSpaceId: data.financialSpaceId,
       name: data.name.trim(),
       type: data.type,
       balance: Money.of(data.balance ?? 0).amount,
@@ -57,8 +57,8 @@ export class Account {
   get id(): string {
     return this.props.id
   }
-  get userId(): string {
-    return this.props.userId
+  get financialSpaceId(): string {
+    return this.props.financialSpaceId
   }
   get name(): string {
     return this.props.name

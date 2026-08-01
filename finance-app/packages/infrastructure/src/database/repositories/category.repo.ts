@@ -11,25 +11,25 @@ export class PrismaCategoryRepository implements ICategoryRepository {
     return row ? toDomainCategory(row) : null
   }
 
-  async findByUserId(userId: string): Promise<Category[]> {
+  async findByFinancialSpaceId(financialSpaceId: string): Promise<Category[]> {
     const rows = await this.prisma.category.findMany({
-      where: { userId },
+      where: { financialSpaceId },
       orderBy: { name: "asc" },
     })
     return rows.map(toDomainCategory)
   }
 
-  async findByUserIdAndType(userId: string, type: CategoryType): Promise<Category[]> {
+  async findByFinancialSpaceIdAndType(financialSpaceId: string, type: CategoryType): Promise<Category[]> {
     const rows = await this.prisma.category.findMany({
-      where: { userId, type },
+      where: { financialSpaceId, type },
       orderBy: { name: "asc" },
     })
     return rows.map(toDomainCategory)
   }
 
-  async findByName(userId: string, name: string): Promise<Category | null> {
+  async findByName(financialSpaceId: string, name: string): Promise<Category | null> {
     const row = await this.prisma.category.findFirst({
-      where: { userId, name: { equals: name, mode: "insensitive" } },
+      where: { financialSpaceId, name: { equals: name, mode: "insensitive" } },
     })
     return row ? toDomainCategory(row) : null
   }
@@ -38,7 +38,7 @@ export class PrismaCategoryRepository implements ICategoryRepository {
     const row = await this.prisma.category.create({
       data: {
         id: category.id,
-        userId: category.userId,
+        financialSpaceId: category.financialSpaceId,
         name: category.name,
         icon: category.icon,
         color: category.color,
@@ -53,7 +53,7 @@ export class PrismaCategoryRepository implements ICategoryRepository {
     const rows = await this.prisma.category.createManyAndReturn({
       data: categories.map((c) => ({
         id: c.id,
-        userId: c.userId,
+        financialSpaceId: c.financialSpaceId,
         name: c.name,
         icon: c.icon,
         color: c.color,

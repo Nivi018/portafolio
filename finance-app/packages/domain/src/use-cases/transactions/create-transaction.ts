@@ -18,14 +18,14 @@ export interface CreateTransactionDeps {
  * Validates ownership of both account and category.
  */
 export function makeCreateTransaction(deps: CreateTransactionDeps) {
-  return async (userId: string, input: CreateTransactionInput): Promise<Transaction> => {
+  return async (financialSpaceId: string, input: CreateTransactionInput): Promise<Transaction> => {
     const account = await deps.accountRepo.findById(input.accountId)
-    if (!account || account.userId !== userId) {
+    if (!account || account.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Account')
     }
 
     const category = await deps.categoryRepo.findById(input.categoryId)
-    if (!category || category.userId !== userId) {
+    if (!category || category.financialSpaceId !== financialSpaceId) {
       throw new NotFoundException('Category')
     }
     if (category.type !== input.type) {
@@ -34,7 +34,7 @@ export function makeCreateTransaction(deps: CreateTransactionDeps) {
       )
     }
 
-    const transaction = Transaction.create({ ...input, userId })
+    const transaction = Transaction.create({ ...input, financialSpaceId })
     account.applyTransaction(transaction)
 
     await deps.transactionRepo.create(transaction)
