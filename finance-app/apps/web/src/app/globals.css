@@ -50,6 +50,12 @@ body {
   font-family: Aptos, "Trebuchet MS", "Segoe UI", sans-serif;
 }
 
+.mobile-bottom-nav {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  scroll-snap-type: x proximity;
+  overscroll-behavior-x: contain;
+}
+
 button,
 input,
 select {
@@ -162,6 +168,18 @@ button:focus-visible,
 a:focus-visible {
   outline: none;
   box-shadow: 0 0 0 3px var(--focus-ring);
+}
+
+@media (pointer: coarse) {
+  button,
+  input,
+  select {
+    min-height: 44px;
+  }
+
+  a:not([class*="min-h-"]) {
+    min-height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

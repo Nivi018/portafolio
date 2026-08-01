@@ -4,12 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   BarChart3,
+  ChartNoAxesCombined,
+  CalendarDays,
   CalendarClock,
   CreditCard,
+  HandCoins,
+  Calculator,
   LayoutDashboard,
   PiggyBank,
   ReceiptText,
   Target,
+  Scale,
   WalletCards,
 } from 'lucide-react'
 
@@ -17,7 +22,13 @@ const navigation = [
   { href: '/dashboard', label: 'Resumen', icon: LayoutDashboard },
   { href: '/transactions', label: 'Movimientos', icon: ReceiptText },
   { href: '/accounts', label: 'Cuentas', icon: WalletCards },
+  { href: '/credit-cards', label: 'Tarjetas', icon: CreditCard },
+  { href: '/loans', label: 'Préstamos', icon: HandCoins },
+  { href: '/credit-simulator', label: 'Simulador', icon: Calculator },
+  { href: '/net-worth', label: 'Patrimonio', icon: Scale },
   { href: '/budgets', label: 'Presupuestos', icon: PiggyBank },
+  { href: '/plan-items', label: 'Plan mensual', icon: CalendarDays },
+  { href: '/plan-vs-actual', label: 'Plan vs. real', icon: ChartNoAxesCombined },
   { href: '/goals', label: 'Metas', icon: Target },
   { href: '/recurring', label: 'Recurrentes', icon: CalendarClock },
   { href: '/reports', label: 'Reportes', icon: BarChart3 },
@@ -62,7 +73,7 @@ export function Sidebar() {
           <p className="mt-1 text-xs leading-5 text-[#8ca59e]">Registra, compara y decide con claridad.</p>
         </div>
       </aside>
-      <nav aria-label="Navegación principal" className="fixed inset-x-0 bottom-0 z-30 flex gap-1 overflow-x-auto border-t border-white/10 bg-[#101c1b]/95 px-2 py-2 backdrop-blur lg:hidden">
+      <nav aria-label="Navegación principal" className="mobile-bottom-nav fixed inset-x-0 bottom-0 z-30 flex gap-1 overflow-x-auto border-t border-white/10 bg-[#101c1b]/95 px-2 py-2 backdrop-blur lg:hidden">
         {navigation.map(({ href, label, icon: Icon }) => {
           const active = pathname === href
           return (
@@ -70,7 +81,7 @@ export function Sidebar() {
               key={href}
               href={href}
               aria-current={active ? 'page' : undefined}
-              className={`flex min-w-16 shrink-0 flex-1 flex-col items-center gap-1 rounded-lg px-1 py-1.5 text-[10px] transition ${active ? 'bg-[#4ea5ff]/12 text-[#4ea5ff]' : 'text-[#8ca59e] hover:bg-white/5 hover:text-white'}`}
+              className={`flex min-h-11 min-w-16 shrink-0 snap-start flex-1 flex-col items-center justify-center gap-1 rounded-lg px-1 py-1.5 text-[10px] transition ${active ? 'bg-[#4ea5ff]/12 text-[#4ea5ff]' : 'text-[#8ca59e] hover:bg-white/5 hover:text-white'}`}
             >
               <Icon size={18} />
               <span className="truncate">{label}</span>

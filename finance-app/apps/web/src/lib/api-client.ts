@@ -19,6 +19,9 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
       credentials: 'include',
       headers: {
         ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+        ...(typeof window !== 'undefined' && localStorage.getItem('financial-space-id')
+          ? { 'x-financial-space-id': localStorage.getItem('financial-space-id')! }
+          : {}),
         ...init.headers,
       },
     })
