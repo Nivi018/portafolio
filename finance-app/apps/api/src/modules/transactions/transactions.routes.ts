@@ -31,7 +31,7 @@ async function transactionDto(transaction: Transaction) {
 
 transactionsRoutes.get('/', zValidator('query', transactionFiltersSchema), async (c) => {
   const result = await makeGetTransactions({ transactionRepo: container.transactionRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.valid('query')
   )
 
@@ -53,7 +53,7 @@ transactionsRoutes.post('/', zValidator('json', createTransactionSchema), async 
     transactionRepo: container.transactionRepo,
     accountRepo: container.accountRepo,
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.valid('json'))
 
   return c.json({ data: await transactionDto(transaction) }, 201)
 })
@@ -64,7 +64,7 @@ transactionsRoutes.post('/import', zValidator('json', importCsvSchema), async (c
     transactionRepo: container.transactionRepo,
     accountRepo: container.accountRepo,
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'), input.accountId, input.rows)
+  })(c.get('financialSpaceId'), input.accountId, input.rows)
 
   return c.json({ data: result }, 201)
 })
@@ -74,7 +74,7 @@ transactionsRoutes.patch('/:id', zValidator('json', updateTransactionSchema), as
     transactionRepo: container.transactionRepo,
     accountRepo: container.accountRepo,
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'), c.req.param('id'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.param('id'), c.req.valid('json'))
 
   return c.json({ data: await transactionDto(transaction) })
 })
@@ -83,7 +83,7 @@ transactionsRoutes.delete('/:id', async (c) => {
   await makeDeleteTransaction({
     transactionRepo: container.transactionRepo,
     accountRepo: container.accountRepo,
-  })(c.get('userId'), c.req.param('id'))
+  })(c.get('financialSpaceId'), c.req.param('id'))
   return c.body(null, 204)
 })
 

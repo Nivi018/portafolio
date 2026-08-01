@@ -11,7 +11,7 @@ dashboardRoutes.get('/', async (c) => {
     accountRepo: container.accountRepo,
     transactionRepo: container.transactionRepo,
     budgetRepo: container.budgetRepo,
-  })(c.get('userId'))
+  })(c.get('financialSpaceId'))
 
   const dto = await toDashboardDto(
     dashboard,

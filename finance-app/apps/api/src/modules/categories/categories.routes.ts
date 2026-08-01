@@ -19,7 +19,7 @@ categoriesRoutes.get('/', async (c) => {
   }
 
   const categories = await makeGetCategories({ categoryRepo: container.categoryRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     requestedType as (typeof CATEGORY_TYPES)[number] | undefined
   )
   return c.json({ data: categories.map(toCategoryDto) })
@@ -27,7 +27,7 @@ categoriesRoutes.get('/', async (c) => {
 
 categoriesRoutes.post('/', zValidator('json', createCategorySchema), async (c) => {
   const category = await makeCreateCategory({ categoryRepo: container.categoryRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.valid('json')
   )
   return c.json({ data: toCategoryDto(category) }, 201)
@@ -35,7 +35,7 @@ categoriesRoutes.post('/', zValidator('json', createCategorySchema), async (c) =
 
 categoriesRoutes.delete('/:id', async (c) => {
   await makeDeleteCategory({ categoryRepo: container.categoryRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.param('id')
   )
   return c.body(null, 204)

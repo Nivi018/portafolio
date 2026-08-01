@@ -1,23 +1,35 @@
 import type {
   AccountDto,
   AccountSummaryDto,
+  AssetDto,
+  AssetValuationDto,
   BudgetDto,
   BudgetStatusDto,
   CategoryDto,
   CategorySummaryDto,
+  CreditCardProfileDto,
   DashboardDto,
   GoalWithProgressDto,
+  LoanPaymentDto,
+  LoanWithProgressDto,
+  PlanItemDto,
   RecurringTransactionDto,
   TransactionDto,
   UserDto,
 } from '@finance/shared'
 import type {
   Account,
+  Asset,
+  AssetValuation,
   Budget,
   BudgetStatus,
   Category,
+  CreditCardProfile,
   DashboardData,
   Goal,
+  Loan,
+  LoanPayment,
+  PlanItem,
   RecurringTransaction,
   Transaction,
   User,
@@ -58,6 +70,29 @@ export function toAccountDto(account: Account): AccountDto {
 
 export function toAccountSummaryDto(account: Account): AccountSummaryDto {
   return { id: account.id, name: account.name, type: account.type }
+}
+
+export function toAssetDto(asset: Asset): AssetDto {
+  return { id: asset.id, financialSpaceId: asset.financialSpaceId, name: asset.name, type: asset.type, currentValue: asset.currentValue, notes: asset.notes, createdAt: iso(asset.createdAt), updatedAt: iso(asset.updatedAt) }
+}
+
+export function toAssetValuationDto(valuation: AssetValuation): AssetValuationDto {
+  return { id: valuation.id, assetId: valuation.assetId, value: valuation.value, date: iso(valuation.date), notes: valuation.notes, createdAt: iso(valuation.createdAt) }
+}
+
+export function toCreditCardProfileDto(profile: CreditCardProfile): CreditCardProfileDto {
+  return {
+    id: profile.id,
+    accountId: profile.accountId,
+    bank: profile.bank,
+    product: profile.product,
+    creditLimit: profile.creditLimit,
+    apr: profile.apr,
+    statementCloseDay: profile.statementCloseDay,
+    paymentDueDay: profile.paymentDueDay,
+    createdAt: iso(profile.createdAt),
+    updatedAt: iso(profile.updatedAt),
+  }
 }
 
 export function toTransactionDto(
@@ -103,11 +138,66 @@ export function toGoalDto(goal: Goal): GoalWithProgressDto {
     targetAmount: goal.targetAmount,
     currentAmount: goal.currentAmount,
     deadline: goal.deadline ? iso(goal.deadline) : null,
+    expectedAnnualReturn: goal.expectedAnnualReturn,
+    monthlyContributionTarget: goal.monthlyContributionTarget,
     status: goal.status,
     createdAt: iso(goal.createdAt),
     percentage: goal.getProgress(),
     remainingAmount: goal.getRemainingAmount(),
     daysRemaining: goal.getDaysRemaining(),
+    monthsToDeadline: goal.getMonthsToDeadline(),
+    projectedAmount: goal.getProjectedAmount(),
+    requiredMonthlyContribution: goal.getRequiredMonthlyContribution(),
+    projectionStatus: goal.getProjectionStatus(),
+  }
+}
+
+export function toLoanDto(loan: Loan): LoanWithProgressDto {
+  return {
+    id: loan.id,
+    financialSpaceId: loan.financialSpaceId,
+    lender: loan.lender,
+    name: loan.name,
+    originalPrincipal: loan.originalPrincipal,
+    currentBalance: loan.currentBalance,
+    annualRate: loan.annualRate,
+    termMonths: loan.termMonths,
+    monthlyPayment: loan.monthlyPayment,
+    startDate: iso(loan.startDate),
+    nextPaymentDate: iso(loan.nextPaymentDate),
+    createdAt: iso(loan.createdAt),
+    updatedAt: iso(loan.updatedAt),
+    progressPercentage: loan.getProgress(),
+    estimatedTotalInterest: loan.getEstimatedTotalInterest(),
+  }
+}
+
+export function toLoanPaymentDto(payment: LoanPayment): LoanPaymentDto {
+  return {
+    id: payment.id,
+    loanId: payment.loanId,
+    amount: payment.amount,
+    date: iso(payment.date),
+    transactionId: payment.transactionId,
+    createdAt: iso(payment.createdAt),
+  }
+}
+
+export function toPlanItemDto(planItem: PlanItem): PlanItemDto {
+  return {
+    id: planItem.id,
+    name: planItem.name,
+    amount: planItem.amount,
+    type: planItem.type,
+    frequency: planItem.frequency,
+    categoryId: planItem.categoryId,
+    accountId: planItem.accountId,
+    isFixed: planItem.isFixed,
+    isMicroExpense: planItem.isMicroExpense,
+    monthlyEquivalent: planItem.monthlyEquivalent,
+    yearlyEquivalent: planItem.yearlyEquivalent,
+    createdAt: iso(planItem.createdAt),
+    updatedAt: iso(planItem.updatedAt),
   }
 }
 

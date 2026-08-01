@@ -1,11 +1,19 @@
 import { dateRangeQuerySchema } from '@finance/shared'
 import { zValidator } from '@hono/zod-validator'
-import { DateRange } from '@finance/domain'
+import { DateRange, makeGetPlanVsActual } from '@finance/domain'
 import { Hono } from 'hono'
 import { container } from '../../lib/container'
 import { requireSession } from '../../middleware/session'
 
 const reportsRoutes = new Hono().use('*', requireSession)
+
+// Query dates are calendar days. Rebuild them locally so YYYY-MM-DD does not shift a month by UTC parsing.
+function calendarRange(from: Date, to: Date): DateRange {
+  return DateRange.of(
+    new Date(from.getUTCFullYear(), from.getUTCMonth(), from.getUTCDate()),
+    new Date(to.getUTCFullYear(), to.getUTCMonth(), to.getUTCDate()),
+  )
+}
 
 reportsRoutes.get('/income-expense', zValidator('query', dateRangeQuerySchema), async (c) => {
   const { from, to } = c.req.valid('query')
@@ -13,13 +21,13 @@ reportsRoutes.get('/income-expense', zValidator('query', dateRangeQuerySchema), 
     return c.json({ error: 'from y to son requeridos', code: 'VALIDATION_ERROR' }, 400)
   }
 
-  const range = DateRange.of(from, to)
-  const userId = c.get('userId')
+  const range = calendarRange(from, to)
+  const financialSpaceId = c.get('financialSpaceId')
   const [summary, expensesByCategory, incomeByCategory, monthlyFlow] = await Promise.all([
-    container.transactionRepo.getSummary(userId, range),
-    container.transactionRepo.getCategoryTotals(userId, range, 'EXPENSE'),
-    container.transactionRepo.getCategoryTotals(userId, range, 'INCOME'),
-    container.transactionRepo.getMonthlyFlow(userId, 6),
+    container.transactionRepo.getSummary(financialSpaceId, range),
+    container.transactionRepo.getCategoryTotals(financialSpaceId, range, 'EXPENSE'),
+    container.transactionRepo.getCategoryTotals(financialSpaceId, range, 'INCOME'),
+    container.transactionRepo.getMonthlyFlow(financialSpaceId, 6),
   ])
 
   const withPercentages = (items: typeof expensesByCategory) => {
@@ -39,6 +47,25 @@ reportsRoutes.get('/income-expense', zValidator('query', dateRangeQuerySchema), 
       monthlyFlow,
       expensesByCategory: withPercentages(expensesByCategory),
       incomeByCategory: withPercentages(incomeByCategory),
+    },
+  })
+})
+
+reportsRoutes.get('/plan-vs-actual', zValidator('query', dateRangeQuerySchema), async (c) => {
+  const { from, to } = c.req.valid('query')
+  if (!from || !to) {
+    return c.json({ error: 'from y to son requeridos', code: 'VALIDATION_ERROR' }, 400)
+  }
+
+  const comparison = await makeGetPlanVsActual({
+    planItemRepo: container.planItemRepo,
+    transactionRepo: container.transactionRepo,
+  })(c.get('financialSpaceId'), calendarRange(from, to))
+
+  return c.json({
+    data: {
+      ...comparison,
+      period: { from: from.toISOString(), to: to.toISOString() },
     },
   })
 })

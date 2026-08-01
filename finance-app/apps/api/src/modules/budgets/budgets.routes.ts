@@ -20,7 +20,7 @@ budgetsRoutes.get('/', async (c) => {
   const result = await makeGetBudgetStatuses({
     budgetRepo: container.budgetRepo,
     transactionRepo: container.transactionRepo,
-  })(c.get('userId'))
+  })(c.get('financialSpaceId'))
 
   return c.json({
     data: await Promise.all(
@@ -39,7 +39,7 @@ budgetsRoutes.post('/', zValidator('json', createBudgetSchema), async (c) => {
   const budget = await makeCreateBudget({
     budgetRepo: container.budgetRepo,
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.valid('json'))
 
   const category = budget.categoryId ? await container.categoryRepo.findById(budget.categoryId) : null
   return c.json({ data: toBudgetDto(budget, category) }, 201)
@@ -47,7 +47,7 @@ budgetsRoutes.post('/', zValidator('json', createBudgetSchema), async (c) => {
 
 budgetsRoutes.patch('/:id', zValidator('json', updateBudgetSchema), async (c) => {
   const budget = await makeUpdateBudget({ budgetRepo: container.budgetRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.param('id'),
     c.req.valid('json')
   )
@@ -56,7 +56,7 @@ budgetsRoutes.patch('/:id', zValidator('json', updateBudgetSchema), async (c) =>
 })
 
 budgetsRoutes.delete('/:id', async (c) => {
-  await makeDeleteBudget({ budgetRepo: container.budgetRepo })(c.get('userId'), c.req.param('id'))
+  await makeDeleteBudget({ budgetRepo: container.budgetRepo })(c.get('financialSpaceId'), c.req.param('id'))
   return c.body(null, 204)
 })
 

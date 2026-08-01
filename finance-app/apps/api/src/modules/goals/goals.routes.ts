@@ -1,6 +1,7 @@
 import {
   contributeGoalSchema,
   createGoalSchema,
+  updateGoalSchema,
 } from '@finance/shared'
 import { zValidator } from '@hono/zod-validator'
 import {
@@ -8,6 +9,7 @@ import {
   makeCreateGoal,
   makeDeleteGoal,
   makeGetGoals,
+  makeUpdateGoal,
 } from '@finance/domain'
 import { Hono } from 'hono'
 import { container } from '../../lib/container'
@@ -17,16 +19,25 @@ import { requireSession } from '../../middleware/session'
 const goalsRoutes = new Hono().use('*', requireSession)
 
 goalsRoutes.get('/', async (c) => {
-  const goals = await makeGetGoals({ goalRepo: container.goalRepo })(c.get('userId'))
+  const goals = await makeGetGoals({ goalRepo: container.goalRepo })(c.get('financialSpaceId'))
   return c.json({ data: goals.map(toGoalDto) })
 })
 
 goalsRoutes.post('/', zValidator('json', createGoalSchema), async (c) => {
   const goal = await makeCreateGoal({ goalRepo: container.goalRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.valid('json')
   )
   return c.json({ data: toGoalDto(goal) }, 201)
+})
+
+goalsRoutes.patch('/:id', zValidator('json', updateGoalSchema), async (c) => {
+  const goal = await makeUpdateGoal({ goalRepo: container.goalRepo })(
+    c.get('financialSpaceId'),
+    c.req.param('id'),
+    c.req.valid('json')
+  )
+  return c.json({ data: toGoalDto(goal) })
 })
 
 goalsRoutes.post('/:id/contribute', zValidator('json', contributeGoalSchema), async (c) => {
@@ -34,13 +45,13 @@ goalsRoutes.post('/:id/contribute', zValidator('json', contributeGoalSchema), as
     goalRepo: container.goalRepo,
     accountRepo: container.accountRepo,
     transactionRepo: container.transactionRepo,
-  })(c.get('userId'), c.req.param('id'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.param('id'), c.req.valid('json'))
 
   return c.json({ data: toGoalDto(result.goal) }, 201)
 })
 
 goalsRoutes.delete('/:id', async (c) => {
-  await makeDeleteGoal({ goalRepo: container.goalRepo })(c.get('userId'), c.req.param('id'))
+  await makeDeleteGoal({ goalRepo: container.goalRepo })(c.get('financialSpaceId'), c.req.param('id'))
   return c.body(null, 204)
 })
 

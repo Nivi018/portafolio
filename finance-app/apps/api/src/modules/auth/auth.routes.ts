@@ -9,14 +9,26 @@ const authRoutes = new Hono()
 authRoutes.get('/me', requireSession, async (c) => {
   const user = await container.authService.getUserById(c.get('userId'))
   if (!user) return c.json({ error: 'Usuario no encontrado', code: 'NOT_FOUND' }, 404)
-  return c.json({ data: toUserDto(user) })
+  const financialSpace = await container.financialSpaceRepo.findById(c.get('financialSpaceId'))
+  if (!financialSpace) throw new Error('Espacio financiero de sesión no encontrado')
+  return c.json({
+    data: {
+      ...toUserDto(user),
+      financialSpace: {
+        id: financialSpace.id,
+        name: financialSpace.name,
+        type: financialSpace.type,
+        role: c.get('role'),
+      },
+    },
+  })
 })
 
 /** Safe to call after registration or login; category seeding is idempotent. */
 authRoutes.post('/bootstrap', requireSession, async (c) => {
   const categories = await makeCreateDefaultCategories({
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'))
+  })(c.get('financialSpaceId'))
 
   return c.json({ data: { createdCategories: categories.length } })
 })

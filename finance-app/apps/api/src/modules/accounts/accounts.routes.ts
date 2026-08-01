@@ -19,13 +19,13 @@ import { requireSession } from '../../middleware/session'
 const accountsRoutes = new Hono().use('*', requireSession)
 
 accountsRoutes.get('/', async (c) => {
-  const accounts = await makeGetAccounts({ accountRepo: container.accountRepo })(c.get('userId'))
+  const accounts = await makeGetAccounts({ accountRepo: container.accountRepo })(c.get('financialSpaceId'))
   return c.json({ data: accounts.map(toAccountDto) })
 })
 
 accountsRoutes.post('/', zValidator('json', createAccountSchema), async (c) => {
   const account = await makeCreateAccount({ accountRepo: container.accountRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.valid('json')
   )
   return c.json({ data: toAccountDto(account) }, 201)
@@ -35,7 +35,7 @@ accountsRoutes.post('/transfer', zValidator('json', transferFundsSchema), async 
   const result = await makeTransferFunds({
     accountRepo: container.accountRepo,
     transactionRepo: container.transactionRepo,
-  })(c.get('userId'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.valid('json'))
 
   const [from, to] = await Promise.all([
     container.accountRepo.findById(result.outgoing.accountId),
@@ -57,7 +57,7 @@ accountsRoutes.post('/transfer', zValidator('json', transferFundsSchema), async 
 
 accountsRoutes.patch('/:id', zValidator('json', updateAccountSchema), async (c) => {
   const account = await makeUpdateAccount({ accountRepo: container.accountRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.param('id'),
     c.req.valid('json')
   )
@@ -66,7 +66,7 @@ accountsRoutes.patch('/:id', zValidator('json', updateAccountSchema), async (c) 
 
 accountsRoutes.delete('/:id', async (c) => {
   await makeDeleteAccount({ accountRepo: container.accountRepo })(
-    c.get('userId'),
+    c.get('financialSpaceId'),
     c.req.param('id')
   )
   return c.body(null, 204)

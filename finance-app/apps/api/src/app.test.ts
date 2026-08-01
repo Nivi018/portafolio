@@ -10,7 +10,7 @@ describe('API app', () => {
   })
 
   it('rejects protected endpoints without a Better Auth session', async () => {
-    const response = await app.request('/api/accounts')
+    const response = await app.request('/api/credit-simulator', { method: 'POST' })
 
     expect(response.status).toBe(401)
     await expect(response.json()).resolves.toMatchObject({ code: 'UNAUTHORIZED' })

@@ -41,7 +41,7 @@ recurringRoutes.post('/process-due', async (c) => {
 recurringRoutes.use('*', requireSession)
 
 recurringRoutes.get('/', async (c) => {
-  const recurring = await makeGetRecurring({ recurringRepo: container.recurringRepo })(c.get('userId'))
+  const recurring = await makeGetRecurring({ recurringRepo: container.recurringRepo })(c.get('financialSpaceId'))
   return c.json({ data: await Promise.all(recurring.map(recurringDto)) })
 })
 
@@ -50,7 +50,7 @@ recurringRoutes.post('/', zValidator('json', createRecurringSchema), async (c) =
     recurringRepo: container.recurringRepo,
     accountRepo: container.accountRepo,
     categoryRepo: container.categoryRepo,
-  })(c.get('userId'), c.req.valid('json'))
+  })(c.get('financialSpaceId'), c.req.valid('json'))
   return c.json({ data: await recurringDto(recurring) }, 201)
 })
 
